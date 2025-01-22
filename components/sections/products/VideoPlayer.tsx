@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import ReactPlayer from "react-player";
-import { Loader2, AlertCircle } from "lucide-react";
+import { Loader2, AlertCircle, Maximize2, Minimize2 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface VideoPlayerProps {
@@ -16,6 +16,7 @@ interface VideoPlayerProps {
 export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const { language } = useLanguage();
 
   const currentVideoUrl = language === "es" ? videoUrl.es : videoUrl.en;
@@ -26,6 +27,16 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
       ? "El video no está disponible en este momento" 
       : "The video is not available at this time");
     console.error(`Error loading video for ${title}:`, currentVideoUrl);
+  };
+
+  const toggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    }
   };
 
   return (
@@ -44,7 +55,7 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
           </p>
         </div>
       ) : (
-        <div className="w-full h-full">
+        <div className="relative w-full h-full group">
           <ReactPlayer
             url={currentVideoUrl}
             width="100%"
@@ -60,7 +71,9 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
               file: {
                 attributes: {
                   controlsList: 'nodownload',
-                  preload: 'auto'
+                  preload: 'auto',
+                  playsInline: true,
+                  className: 'w-full h-full rounded-xl'
                 },
                 forceVideo: true
               }
@@ -68,11 +81,23 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
             style={{
               width: '100%',
               height: '100%',
-              minHeight: '300px',
-              maxHeight: 'calc(90vh - 200px)'
+              minHeight: '250px',
+              maxHeight: isFullscreen ? '100vh' : 'calc(90vh - 200px)'
             }}
             className="rounded-xl"
           />
+          
+          <button
+            onClick={toggleFullscreen}
+            className="absolute top-4 right-4 p-2 bg-black/50 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-black/70 z-20"
+            aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+          >
+            {isFullscreen ? (
+              <Minimize2 className="h-5 w-5" />
+            ) : (
+              <Maximize2 className="h-5 w-5" />
+            )}
+          </button>
         </div>
       )}
     </div>

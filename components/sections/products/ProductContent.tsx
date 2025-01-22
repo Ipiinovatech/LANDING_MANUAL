@@ -7,6 +7,7 @@ import { VideoPlayer } from "./VideoPlayer";
 import { DemoButton } from "./DemoButton";
 import { Product } from "@/types/product";
 import ReactMarkdown from "react-markdown";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ProductContentProps {
   product: Product;
@@ -24,7 +25,7 @@ export function ProductContent({
   language 
 }: ProductContentProps) {
   return (
-    <div className="p-8 space-y-8">
+    <div className="p-4 sm:p-8 space-y-6 sm:space-y-8">
       <div className="flex justify-end">
         <Button
           variant="outline"
@@ -36,12 +37,16 @@ export function ProductContent({
           {showImage ? (
             <>
               <ImageOff className="h-4 w-4 mr-2" />
-              {language === "es" ? "Ocultar imagen" : "Hide image"}
+              <span className="hidden sm:inline">
+                {language === "es" ? "Ocultar imagen" : "Hide image"}
+              </span>
             </>
           ) : (
             <>
               <ImageIcon className="h-4 w-4 mr-2" />
-              {language === "es" ? "Mostrar imagen" : "Show image"}
+              <span className="hidden sm:inline">
+                {language === "es" ? "Mostrar imagen" : "Show image"}
+              </span>
             </>
           )}
         </Button>
@@ -76,47 +81,49 @@ export function ProductContent({
         </div>
       )}
 
-      <div className="space-y-8 max-w-[80ch] mx-auto">
-        <div className="prose prose-invert max-w-none">
-          <ReactMarkdown
-            components={{
-              h3: ({ children }) => (
-                <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-200 mt-8 mb-4">{children}</h3>
-              ),
-              ul: ({ children }) => (
-                <ul className="list-disc pl-6 space-y-2 text-gray-300">{children}</ul>
-              ),
-              li: ({ children }) => (
-                <li className="text-gray-300">{children}</li>
-              ),
-              p: ({ children }) => (
-                <p className="text-gray-300 leading-relaxed text-lg mb-6">{children}</p>
-              ),
-            }}
-          >
-            {product.description}
-          </ReactMarkdown>
-        </div>
+      <ScrollArea className="h-[calc(100vh-500px)] sm:h-auto pr-4">
+        <div className="space-y-6 sm:space-y-8 max-w-[80ch] mx-auto">
+          <div className="prose prose-invert max-w-none">
+            <ReactMarkdown
+              components={{
+                h3: ({ children }) => (
+                  <h3 className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-200 mt-6 sm:mt-8 mb-3 sm:mb-4">{children}</h3>
+                ),
+                ul: ({ children }) => (
+                  <ul className="list-disc pl-4 sm:pl-6 space-y-2 text-gray-300">{children}</ul>
+                ),
+                li: ({ children }) => (
+                  <li className="text-gray-300 text-base sm:text-lg">{children}</li>
+                ),
+                p: ({ children }) => (
+                  <p className="text-gray-300 leading-relaxed text-base sm:text-lg mb-4 sm:mb-6">{children}</p>
+                ),
+              }}
+            >
+              {product.description}
+            </ReactMarkdown>
+          </div>
 
-        <div className="flex flex-wrap gap-4">
-          {product.demoUrl && (
-            <DemoButton demoUrl={product.demoUrl} />
-          )}
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={onContact}
-            className="inline-flex items-center gap-2 px-8 py-4 rounded-full
-                     bg-gradient-to-r from-[var(--primary-blue)] via-[var(--accent-blue)] to-blue-400
-                     text-white text-lg font-medium 
-                     shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30
-                     transition-all duration-300"
-          >
-            {language === "es" ? "Contactar" : "Contact Us"}
-            <ExternalLink className="h-5 w-5" />
-          </motion.button>
+          <div className="flex flex-wrap gap-3 sm:gap-4 pt-4">
+            {product.demoUrl && (
+              <DemoButton demoUrl={product.demoUrl} />
+            )}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={onContact}
+              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-full
+                       bg-gradient-to-r from-[var(--primary-blue)] via-[var(--accent-blue)] to-blue-400
+                       text-white text-base sm:text-lg font-medium 
+                       shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30
+                       transition-all duration-300 w-full sm:w-auto justify-center"
+            >
+              {language === "es" ? "Contactar" : "Contact Us"}
+              <ExternalLink className="h-4 w-4 sm:h-5 sm:w-5" />
+            </motion.button>
+          </div>
         </div>
-      </div>
+      </ScrollArea>
     </div>
   );
 }
