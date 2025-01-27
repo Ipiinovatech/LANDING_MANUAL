@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
 import { Loader2, AlertCircle, Maximize2, Minimize2 } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -17,9 +17,21 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const playerContainerRef = useRef<HTMLDivElement>(null);
   const { language } = useLanguage();
 
   const currentVideoUrl = language === "es" ? videoUrl.es : videoUrl.en;
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    };
+  }, []);
 
   const handleError = () => {
     setIsLoading(false);
@@ -29,18 +41,23 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
     console.error(`Error loading video for ${title}:`, currentVideoUrl);
   };
 
-  const toggleFullscreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-      setIsFullscreen(true);
-    } else {
-      document.exitFullscreen();
-      setIsFullscreen(false);
+  const toggleFullscreen = async () => {
+    try {
+      if (!document.fullscreenElement && playerContainerRef.current) {
+        await playerContainerRef.current.requestFullscreen();
+      } else if (document.fullscreenElement) {
+        await document.exitFullscreen();
+      }
+    } catch (err) {
+      console.error('Error toggling fullscreen:', err);
     }
   };
 
   return (
-    <div className="relative w-full h-full rounded-xl bg-black/5">
+    <div 
+      ref={playerContainerRef}
+      className="relative w-full h-full rounded-xl bg-black/5 overflow-hidden"
+    >
       {isLoading && !error && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/5 backdrop-blur-sm z-10">
           <Loader2 className="h-8 w-8 animate-spin text-[var(--primary-blue)]" />
@@ -50,7 +67,7 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
       {error ? (
         <div className="flex flex-col items-center justify-center gap-4 text-white/80 h-full min-h-[300px]">
           <AlertCircle className="h-12 w-12 text-red-500" />
-          <p className="text-center max-w-md">
+          <p className="text-center max-w-md px-4">
             {error}
           </p>
         </div>
@@ -61,7 +78,7 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
             width="100%"
             height="100%"
             controls={true}
-            playing={false}
+            playsinline={true}
             onReady={() => {
               setIsLoading(false);
               setError(null);
@@ -71,11 +88,13 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
               file: {
                 attributes: {
                   controlsList: 'nodownload',
-                  preload: 'auto',
                   playsInline: true,
+                  webkitPlaysInline: true,
+                  disablePictureInPicture: true,
                   className: 'w-full h-full rounded-xl'
                 },
-                forceVideo: true
+                forceVideo: true,
+                forceFLV: false
               }
             }}
             style={{
@@ -84,12 +103,16 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
               minHeight: '250px',
               maxHeight: isFullscreen ? '100vh' : 'calc(90vh - 200px)'
             }}
-            className="rounded-xl"
+            className="rounded-xl touch-manipulation"
           />
           
           <button
             onClick={toggleFullscreen}
-            className="absolute top-4 right-4 p-2 bg-black/50 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-black/70 z-20"
+            className="absolute top-4 right-4 p-2.5 bg-black/50 rounded-full text-white 
+                     opacity-0 group-hover:opacity-100 sm:group-hover:opacity-100
+                     transition-opacity duration-300 hover:bg-black/70 z-20
+                     touch-manipulation select-none
+                     md:block hidden"
             aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
           >
             {isFullscreen ? (
