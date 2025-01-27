@@ -65,9 +65,9 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
       )}
       
       {error ? (
-        <div className="flex flex-col items-center justify-center gap-4 text-white/80 h-full min-h-[300px]">
+        <div className="flex flex-col items-center justify-center gap-4 text-white/80 h-full min-h-[200px]">
           <AlertCircle className="h-12 w-12 text-red-500" />
-          <p className="text-center max-w-md px-4">
+          <p className="text-center max-w-md px-4 text-sm sm:text-base">
             {error}
           </p>
         </div>
@@ -78,7 +78,7 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
             width="100%"
             height="100%"
             controls={true}
-            playsinline={true}
+            playsInline={true}
             onReady={() => {
               setIsLoading(false);
               setError(null);
@@ -89,7 +89,6 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
                 attributes: {
                   controlsList: 'nodownload',
                   playsInline: true,
-                  webkitPlaysInline: true,
                   disablePictureInPicture: true,
                   className: 'w-full h-full rounded-xl'
                 },
@@ -100,25 +99,24 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
             style={{
               width: '100%',
               height: '100%',
-              minHeight: '250px',
-              maxHeight: isFullscreen ? '100vh' : 'calc(90vh - 200px)'
+              minHeight: '180px',
+              maxHeight: isFullscreen ? '100vh' : 'calc(70vh - 100px)'
             }}
             className="rounded-xl touch-manipulation"
           />
           
           <button
             onClick={toggleFullscreen}
-            className="absolute top-4 right-4 p-2.5 bg-black/50 rounded-full text-white 
-                     opacity-0 group-hover:opacity-100 sm:group-hover:opacity-100
+            className="absolute top-2 right-2 p-2 bg-black/50 rounded-full text-white 
+                     opacity-100 sm:opacity-0 sm:group-hover:opacity-100
                      transition-opacity duration-300 hover:bg-black/70 z-20
-                     touch-manipulation select-none
-                     md:block hidden"
+                     touch-manipulation select-none"
             aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
           >
             {isFullscreen ? (
-              <Minimize2 className="h-5 w-5" />
+              <Minimize2 className="h-4 w-4 sm:h-5 sm:w-5" />
             ) : (
-              <Maximize2 className="h-5 w-5" />
+              <Maximize2 className="h-4 w-4 sm:h-5 sm:w-5" />
             )}
           </button>
         </div>
