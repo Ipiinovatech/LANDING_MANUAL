@@ -21,6 +21,7 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
   const { language } = useLanguage();
 
   const currentVideoUrl = language === "es" ? videoUrl.es : videoUrl.en;
+  const isMulticonnect = title === "MulticonnectAI";
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -56,69 +57,73 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
   return (
     <div 
       ref={playerContainerRef}
-      className="relative w-full h-full rounded-xl bg-black/5 overflow-hidden"
+      className={`relative w-full h-full rounded-xl bg-black/5 overflow-hidden mx-auto
+                  ${isMulticonnect ? 'max-w-[90%] sm:max-w-2xl' : 'max-w-3xl'}`}
     >
       {isLoading && !error && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/5 backdrop-blur-sm z-10">
-          <Loader2 className="h-8 w-8 animate-spin text-[var(--primary-blue)]" />
+          <Loader2 className="h-6 w-6 sm:h-8 sm:w-8 animate-spin text-[var(--primary-blue)]" />
         </div>
       )}
       
       {error ? (
-        <div className="flex flex-col items-center justify-center gap-4 text-white/80 h-full min-h-[200px]">
-          <AlertCircle className="h-12 w-12 text-red-500" />
-          <p className="text-center max-w-md px-4 text-sm sm:text-base">
+        <div className="flex flex-col items-center justify-center gap-4 text-white/80 h-full min-h-[160px] sm:min-h-[200px]">
+          <AlertCircle className="h-8 w-8 sm:h-12 sm:w-12 text-red-500" />
+          <p className="text-center max-w-md px-4 text-sm">
             {error}
           </p>
         </div>
       ) : (
-        <div className="relative w-full h-full group">
-          <ReactPlayer
-            url={currentVideoUrl}
-            width="100%"
-            height="100%"
-            controls={true}
-            playsInline={true}
-            onReady={() => {
-              setIsLoading(false);
-              setError(null);
-            }}
-            onError={handleError}
-            config={{
-              file: {
-                attributes: {
-                  controlsList: 'nodownload',
-                  playsInline: true,
-                  disablePictureInPicture: true,
-                  className: 'w-full h-full rounded-xl'
-                },
-                forceVideo: true,
-                forceFLV: false
-              }
-            }}
-            style={{
-              width: '100%',
-              height: '100%',
-              minHeight: '180px',
-              maxHeight: isFullscreen ? '100vh' : 'calc(70vh - 100px)'
-            }}
-            className="rounded-xl touch-manipulation"
-          />
-          
-          <button
-            onClick={toggleFullscreen}
-            className="absolute top-2 right-2 p-2 bg-black/50 rounded-full text-white 
-                     opacity-100 sm:opacity-0 sm:group-hover:opacity-100
-                     transition-opacity duration-300 hover:bg-black/70 z-20
-                     touch-manipulation select-none"
-            aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-          >
-            {isFullscreen ? (
-              <Minimize2 className="h-4 w-4 sm:h-5 sm:w-5" />
-            ) : (
-              <Maximize2 className="h-4 w-4 sm:h-5 sm:w-5" />
-            )}
-          </button>
+        <div className="relative w-full h-full group flex justify-center">
+          <div className="w-full">
+            <ReactPlayer
+              url={currentVideoUrl}
+              width="100%"
+              height="100%"
+              controls={true}
+              playsInline={true}
+              onReady={() => {
+                setIsLoading(false);
+                setError(null);
+              }}
+              onError={handleError}
+              config={{
+                file: {
+                  attributes: {
+                    controlsList: 'nodownload',
+                    playsInline: true,
+                    disablePictureInPicture: true,
+                    className: 'w-full h-full rounded-xl'
+                  },
+                  forceVideo: true,
+                  forceFLV: false
+                }
+              }}
+              style={{
+                width: '100%',
+                height: '100%',
+                minHeight: isMulticonnect ? '160px' : '180px',
+                maxHeight: isFullscreen ? '100vh' : isMulticonnect ? '40vh' : 'calc(70vh - 100px)'
+              }}
+              className="rounded-xl touch-manipulation"
+            />
+            
+            <button
+              onClick={toggleFullscreen}
+              className={`absolute top-2 right-2 p-1.5 sm:p-2 rounded-full text-white z-20
+                        touch-manipulation select-none transition-all duration-300
+                        ${isMulticonnect 
+                          ? 'bg-black/80 hover:bg-black opacity-100' 
+                          : 'bg-black/50 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 hover:bg-black/70'}`}
+              aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+            >
+              {isFullscreen ? (
+                <Minimize2 className="h-4 w-4 sm:h-5 sm:w-5" />
+              ) : (
+                <Maximize2 className="h-4 w-4 sm:h-5 sm:w-5" />
+              )}
+            </button>
+          </div>
         </div>
       )}
     </div>

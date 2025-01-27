@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Product } from "@/types/product";
 import { ProductHeader } from "./ProductHeader";
 import { ProductContent } from "./ProductContent";
+import { Link } from "react-scroll";
 
 interface ProductModalProps {
   isOpen: boolean;
@@ -19,9 +20,18 @@ export function ProductModal({ isOpen, onClose, product }: ProductModalProps) {
   const [showImage, setShowImage] = useState(false);
 
   const handleContactClick = () => {
+    // Cerrar el modal del producto
     onClose();
+    
+    // Disparar evento para abrir el chatbot
     const event = new CustomEvent("openChatbot");
     window.dispatchEvent(event);
+
+    // Scroll suave hacia la sección de contacto
+    const contactSection = document.getElementById("contact");
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   return (
