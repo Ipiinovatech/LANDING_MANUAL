@@ -3,11 +3,10 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Product } from "@/types/product";
 import { ProductHeader } from "./ProductHeader";
 import { ProductContent } from "./ProductContent";
-import { Link } from "react-scroll";
 
 interface ProductModalProps {
   isOpen: boolean;
@@ -19,19 +18,26 @@ export function ProductModal({ isOpen, onClose, product }: ProductModalProps) {
   const { language } = useLanguage();
   const [showImage, setShowImage] = useState(false);
 
+  // Handle back button
+  useEffect(() => {
+    const handlePopState = () => {
+      onClose();
+    };
+
+    if (isOpen) {
+      window.history.pushState({ modal: true }, '');
+      window.addEventListener('popstate', handlePopState);
+    }
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [isOpen, onClose]);
+
   const handleContactClick = () => {
-    // Cerrar el modal del producto
     onClose();
-    
-    // Disparar evento para abrir el chatbot
     const event = new CustomEvent("openChatbot");
     window.dispatchEvent(event);
-
-    // Scroll suave hacia la sección de contacto
-    const contactSection = document.getElementById("contact");
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: "smooth" });
-    }
   };
 
   return (
