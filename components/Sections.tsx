@@ -1,4 +1,5 @@
 import { AboutSection } from "./sections/AboutSection";
+import { AboutButtons } from "./sections/about/AboutButtons";
 import { ServicesSection } from "./sections/ServicesSection";
 import { ProductsSection } from "./sections/ProductsSection";
 import { BlogSection } from "./sections/BlogSection";
@@ -9,6 +10,7 @@ export function Sections() {
   return (
     <>
       <AboutSection />
+      <AboutButtons />
       <ServicesSection />
       <ProductsSection />
       <BlogSection />

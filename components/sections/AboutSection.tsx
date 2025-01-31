@@ -5,7 +5,6 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import Image from "next/image";
 import { AboutText } from "./about/AboutText";
 import { useWindowSize } from "@/hooks/useWindowSize";
-import { AboutCarousel } from "./about/AboutCarousel";
 
 export function AboutSection() {
   const { language } = useLanguage();
@@ -49,16 +48,6 @@ export function AboutSection() {
           <div className={`${!showBackground ? 'bg-white/90 backdrop-blur-md p-8 rounded-2xl shadow-lg' : ''}`}>
             <AboutText />
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            viewport={{ once: true }}
-            className="mt-16"
-          >
-            <AboutCarousel />
-          </motion.div>
         </motion.div>
       </div>
     </section>

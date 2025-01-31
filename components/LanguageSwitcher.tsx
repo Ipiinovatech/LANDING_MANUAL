@@ -36,7 +36,7 @@ export default function LanguageSwitcher() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-2 w-40 rounded-lg border border-white/10 bg-black/90 backdrop-blur-md shadow-lg"
+            className="absolute left-0 right-0 mt-2 rounded-lg border border-white/10 bg-black/90 backdrop-blur-md shadow-lg md:right-0 md:left-auto md:w-40"
           >
             <div className="py-1">
               {languages.map((lang) => (

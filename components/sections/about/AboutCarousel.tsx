@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ImageZoom } from "./ImageZoom";
+import { Link } from "react-scroll";
 
 const slides = {
   es: [
@@ -102,13 +103,18 @@ export function AboutCarousel() {
                 onDoubleClick={handleDoubleClick}
               />
 
-              {/* Close Button */}
-              <button
+              {/* Close Button - Updated to use Link */}
+              <Link
+                to="home"
+                spy={true}
+                smooth={true}
+                offset={-64}
+                duration={500}
+                className="absolute top-4 right-4 p-2 rounded-full bg-white/80 hover:bg-white shadow-lg hover:shadow-xl transition-all duration-200 z-10 cursor-pointer"
                 onClick={() => setShowImage(false)}
-                className="absolute top-4 right-4 p-2 rounded-full bg-white/80 hover:bg-white shadow-lg hover:shadow-xl transition-all duration-200 z-10"
               >
                 <X className="w-5 h-5 text-gray-800" />
-              </button>
+              </Link>
 
               {/* Navigation Arrows */}
               <button
