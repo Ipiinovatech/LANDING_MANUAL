@@ -5,43 +5,77 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useWindowSize } from "@/hooks/useWindowSize";
+import { useLanguage } from "@/contexts/LanguageContext";
 
-const desktopImages = [
-  {
-    src: "/Images/Home/HOME 3.0.jpg",
-    alt: "Home Image 1"
-  },
-  {
-    src: "/Images/Home/HOME PRUEBA 6.jpg",
-    alt: "Home Image 2"
-  },
-  {
-    src: "/Images/Home/HOME 5.0.jpg",
-    alt: "Home Image 3"
-  }
-];
+const desktopImages = {
+  es: [
+    {
+      src: "/Images/Home/HOME 3.0.jpg",
+      alt: "Home Image 1"
+    },
+    {
+      src: "/Images/Home/HOME PRUEBA 6.jpg",
+      alt: "Home Image 2"
+    },
+    {
+      src: "/Images/Home/HOME 5.0.jpg",
+      alt: "Home Image 3"
+    }
+  ],
+  en: [
+    {
+      src: "/Images/Home_Eng/HOME 3.0 (INGLES).png",
+      alt: "Home Image 1"
+    },
+    {
+      src: "/Images/Home_Eng/HOME PRUEBA 6 (INGLES).png",
+      alt: "Home Image 2"
+    },
+    {
+      src: "/Images/Home_Eng/HOME 5.0 (INGLES).png",
+      alt: "Home Image 3"
+    }
+  ]
+};
 
-const mobileImages = [
-  {
-    src: "/Images/Home/MOVIL 1.png",
-    alt: "Mobile Home Image 1"
-  },
-  {
-    src: "/Images/Home/MOVIL 2.png",
-    alt: "Mobile Home Image 2"
-  },
-  {
-    src: "/Images/Home/MOVIL 3.png",
-    alt: "Mobile Home Image 3"
-  }
-];
+const mobileImages = {
+  es: [
+    {
+      src: "/Images/Home/MOVIL 1.png",
+      alt: "Mobile Home Image 1"
+    },
+    {
+      src: "/Images/Home/MOVIL 2.png",
+      alt: "Mobile Home Image 2"
+    },
+    {
+      src: "/Images/Home/MOVIL 3.png",
+      alt: "Mobile Home Image 3"
+    }
+  ],
+  en: [
+    {
+      src: "/Images/Home_Eng/MOVIL 1 INGLES.png",
+      alt: "Mobile Home Image 1"
+    },
+    {
+      src: "/Images/Home_Eng/MOVIL 2 INGLES.png",
+      alt: "Mobile Home Image 2"
+    },
+    {
+      src: "/Images/Home_Eng/MOVIL 3 INGLES.png",
+      alt: "Mobile Home Image 3"
+    }
+  ]
+};
 
 export function HeroCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const { width } = useWindowSize();
+  const { language } = useLanguage();
   const isMobile = width ? width < 768 : false;
-  const images = isMobile ? mobileImages : desktopImages;
+  const images = isMobile ? mobileImages[language] : desktopImages[language];
 
   useEffect(() => {
     const timer = setInterval(() => {

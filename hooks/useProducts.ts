@@ -213,8 +213,8 @@ export function useProducts() {
       isMultiservice: false,
       isVarios: true,
       videoUrl: {
-        es: "/Videos/FABRICA DE SOFTWARE/15. FABRICA DE SOFTWARE_1080p.mp4",
-        en: "/Videos/FABRICA DE SOFTWARE/15. SOFTWARE FACTORY_1080p.mp4"
+        es: "/Videos/FabricaSoftware/video_es.mp4",
+        en: "/Videos/FabricaSoftware/video_en.mp4"
       }
     },
     {
@@ -228,8 +228,8 @@ export function useProducts() {
       isMultiservice: false,
       isVarios: true,
       videoUrl: {
-        es: "/Videos/ANALITICA BIG DATA/19. ANALITICA BIG DATA_1080p.mp4",
-        en: "/Videos/ANALITICA BIG DATA/19. BIG DATA ANALYTICS_1080p.mp4"
+        es: "/Videos/Analitica/video_es.mp4",
+        en: "/Videos/Analitica/video_en.mp4"
       }
     },
     {
@@ -243,8 +243,8 @@ export function useProducts() {
       isMultiservice: false,
       isVarios: true,
       videoUrl: {
-        es: "/Videos/VIRTUAL SMART VIDEO/16. VIRTUAL SMART VIDEO_1080p.mp4",
-        en: "/Videos/VIRTUAL SMART VIDEO/16. VIRTUAL SMART VIDEO INGLES_1080p.mp4"
+        es: "/Videos/SmartVideo/video_es.mp4",
+        en: "/Videos/SmartVideo/video_en.mp4"
       }
     },
     {
@@ -258,8 +258,8 @@ export function useProducts() {
       isMultiservice: false,
       isVarios: true,
       videoUrl: {
-        es: "/Videos/VIRTUAL QUALITY FIELD/18. VIRTUAL QUALITY FIELD_1080p.mp4",
-        en: "/Videos/VIRTUAL QUALITY FIELD/18. VIRTUAL QUALITY FIELD INGLES_1080p.mp4"
+        es: "/Videos/QualityField/video_es.mp4",
+        en: "/Videos/QualityField/video_en.mp4"
       }
     },
     {
@@ -273,8 +273,8 @@ export function useProducts() {
       isMultiservice: false,
       isVarios: true,
       videoUrl: {
-        es: "/Videos/VIRTUAL IPV/17. VIRTUAL IPV_1080p.mp4",
-        en: "/Videos/VIRTUAL IPV/17. VIRTUAL IPV INGLES_1080p.mp4"
+        es: "/Videos/IPV/video_es.mp4",
+        en: "/Videos/IPV/video_en.mp4"
       }
     },
     {
@@ -288,8 +288,8 @@ export function useProducts() {
       isMultiservice: false,
       isVarios: true,
       videoUrl: {
-        es: "/Videos/!PA YA!/14. !PAYA!_1080p.mp4",
-        en: "/Videos/!PA YA!/14. !PAYA! INGLES_1080p.mp4"
+        es: "/Videos/PaYa/video_es.mp4",
+        en: "/Videos/PaYa/video_en.mp4"
       }
     }
   ];
