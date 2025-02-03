@@ -72,6 +72,10 @@ export function ContactForm() {
     setIsSubmitting(false);
     setIsVerified(false);
     setFormData({ name: "", email: "", subject: "", message: "" });
+
+    // Open virtual assistant after successful submission
+    const event = new CustomEvent("openChatbot");
+    window.dispatchEvent(event);
   };
 
   return (

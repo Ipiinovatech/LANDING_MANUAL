@@ -49,6 +49,18 @@ export function VirtualAssistant() {
     };
   }, [isOpen, setIsOpen]);
 
+  // Listen for custom event to open chatbot
+  useEffect(() => {
+    const handleOpenChatbot = () => {
+      setIsOpen(true);
+      // Push state when opening assistant
+      window.history.pushState({ assistant: true }, "");
+    };
+
+    window.addEventListener('openChatbot', handleOpenChatbot);
+    return () => window.removeEventListener('openChatbot', handleOpenChatbot);
+  }, [setIsOpen]);
+
   return (
     <>
       <VirtualAssistantButton onClick={() => {
