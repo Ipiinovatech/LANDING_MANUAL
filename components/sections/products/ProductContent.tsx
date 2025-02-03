@@ -24,15 +24,16 @@ export function ProductContent({
   onContact,
   language 
 }: ProductContentProps) {
+  const isMulticonnect = product.title === "MulticonnectAI";
+
   return (
-    <div className="p-4 sm:p-8 space-y-6 sm:space-y-8">
+    <div className="p-3 sm:p-8 space-y-4 sm:space-y-8">
       <div className="flex justify-end">
         <Button
           variant="outline"
           size="sm"
           onClick={onToggleImage}
-          className="bg-white/5 hover:bg-white/10 text-white border-white/10
-                     transition-all duration-300 hover:scale-105 active:scale-95"
+          className="bg-white/5 hover:bg-white/10 text-white border-white/10"
         >
           {showImage ? (
             <>
@@ -63,40 +64,48 @@ export function ProductContent({
           <img
             src={product.image}
             alt={product.title}
-            className="w-full h-auto object-cover rounded-xl transform hover:scale-105 transition-transform duration-500"
+            className="w-full h-auto object-cover rounded-xl"
           />
         </motion.div>
       )}
 
       {product.videoUrl && (
-        <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-white">
+        <div className="space-y-3 sm:space-y-4 flex flex-col items-center">
+          <h3 className={`font-semibold text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-white
+                         ${isMulticonnect ? 'text-lg sm:text-2xl' : 'text-lg sm:text-xl'}`}>
             {language === "es" ? "Video Explicativo" : "Explanatory Video"}
           </h3>
-          <div className="aspect-video w-full max-w-4xl mx-auto rounded-xl overflow-hidden
-                        shadow-lg shadow-blue-500/10 hover:shadow-blue-500/20 
-                        transition-all duration-300 transform hover:scale-[1.02]">
+          <div className="w-full rounded-xl overflow-hidden shadow-lg shadow-blue-500/10 hover:shadow-blue-500/20 transition-all duration-300">
             <VideoPlayer videoUrl={product.videoUrl} title={product.title} />
           </div>
         </div>
       )}
 
-      <ScrollArea className="h-[calc(100vh-500px)] sm:h-auto pr-4">
-        <div className="space-y-6 sm:space-y-8 max-w-[80ch] mx-auto">
+      <ScrollArea className={`pr-4 ${isMulticonnect ? 'h-auto max-h-[50vh] sm:max-h-none' : 'h-[calc(100vh-500px)] sm:h-auto'}`}>
+        <div className="space-y-4 sm:space-y-6 max-w-[80ch] mx-auto">
           <div className="prose prose-invert max-w-none">
             <ReactMarkdown
               components={{
                 h3: ({ children }) => (
-                  <h3 className="text-xl sm:text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-200 mt-6 sm:mt-8 mb-3 sm:mb-4">{children}</h3>
+                  <h3 className={`font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-200 
+                                 mt-3 sm:mt-6 mb-2 sm:mb-3 text-center
+                                 ${isMulticonnect ? 'text-lg sm:text-2xl' : 'text-lg sm:text-xl'}`}>
+                    {children}
+                  </h3>
                 ),
                 ul: ({ children }) => (
                   <ul className="list-disc pl-4 sm:pl-6 space-y-2 text-gray-300">{children}</ul>
                 ),
                 li: ({ children }) => (
-                  <li className="text-gray-300 text-base sm:text-lg">{children}</li>
+                  <li className={`text-gray-300 ${isMulticonnect ? 'text-sm sm:text-lg' : 'text-sm sm:text-base'}`}>
+                    {children}
+                  </li>
                 ),
                 p: ({ children }) => (
-                  <p className="text-gray-300 leading-relaxed text-base sm:text-lg mb-4 sm:mb-6">{children}</p>
+                  <p className={`text-gray-300 leading-relaxed mb-3 sm:mb-4 text-center
+                                ${isMulticonnect ? 'text-sm sm:text-lg' : 'text-sm sm:text-base'}`}>
+                    {children}
+                  </p>
                 ),
               }}
             >
@@ -104,22 +113,23 @@ export function ProductContent({
             </ReactMarkdown>
           </div>
 
-          <div className="flex flex-wrap gap-3 sm:gap-4 pt-4">
+          <div className="flex flex-col sm:flex-row gap-3 pt-4 justify-center">
             {product.demoUrl && (
-              <DemoButton demoUrl={product.demoUrl} />
+              <DemoButton demoUrl={product.demoUrl} className="w-full sm:w-auto" />
             )}
             <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               onClick={onContact}
-              className="inline-flex items-center gap-2 px-6 sm:px-8 py-3 sm:py-4 rounded-full
-                       bg-gradient-to-r from-[var(--primary-blue)] via-[var(--accent-blue)] to-blue-400
-                       text-white text-base sm:text-lg font-medium 
-                       shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30
-                       transition-all duration-300 w-full sm:w-auto justify-center"
+              className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 
+                         px-4 sm:px-6 py-2 sm:py-3 rounded-full
+                         bg-gradient-to-r from-[var(--primary-blue)] via-[var(--accent-blue)] to-blue-400
+                         text-white shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30
+                         transition-all duration-300
+                         ${isMulticonnect ? 'text-sm sm:text-lg font-semibold' : 'text-sm sm:text-base font-medium'}`}
             >
               {language === "es" ? "Contactar" : "Contact Us"}
-              <ExternalLink className="h-4 w-4 sm:h-5 sm:w-5" />
+              <ExternalLink className="h-4 w-4" />
             </motion.button>
           </div>
         </div>
