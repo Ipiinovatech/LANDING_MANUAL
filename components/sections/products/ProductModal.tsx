@@ -3,7 +3,7 @@
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Product } from "@/types/product";
 import { ProductHeader } from "./ProductHeader";
 import { ProductContent } from "./ProductContent";
@@ -18,14 +18,51 @@ export function ProductModal({ isOpen, onClose, product }: ProductModalProps) {
   const { language } = useLanguage();
   const [showImage, setShowImage] = useState(false);
 
+  // Handle browser back button
+  useEffect(() => {
+    if (isOpen) {
+      // Push a new state when modal opens
+      window.history.pushState({ modal: true }, "");
+    }
+
+    // Handle popstate (back button)
+    const handlePopState = (event: PopStateEvent) => {
+      if (isOpen) {
+        onClose();
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [isOpen, onClose]);
+
   const handleContactClick = () => {
     onClose();
     const event = new CustomEvent("openChatbot");
     window.dispatchEvent(event);
   };
 
+  const handleBackToProducts = () => {
+    onClose();
+    const productsSection = document.getElementById('products');
+    if (productsSection) {
+      productsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={(open) => {
+      if (!open) {
+        // If modal is closing, go back in history
+        if (window.history.state?.modal) {
+          window.history.back();
+        }
+        onClose();
+      }
+    }}>
       <DialogContent 
         className="max-w-[95vw] w-[1400px] max-h-[95vh] p-0 overflow-hidden
                    bg-gradient-to-br from-gray-900 via-[#1a1f35] to-black
@@ -36,7 +73,8 @@ export function ProductModal({ isOpen, onClose, product }: ProductModalProps) {
       >
         <ProductHeader 
           product={product} 
-          onClose={onClose} 
+          onClose={onClose}
+          onBack={handleBackToProducts}
         />
 
         <ScrollArea 
