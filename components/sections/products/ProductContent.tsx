@@ -26,6 +26,23 @@ export function ProductContent({
 }: ProductContentProps) {
   const isMulticonnect = product.title === "MulticonnectAI";
 
+  const handleContactClick = () => {
+    // 1. Cierra el modal (si es necesario)
+    onContact();
+    
+    // 2. Desplázate a la sección de contacto
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // 3. Abre el asistente virtual después de un pequeño retraso para permitir la animación de scroll
+    setTimeout(() => {
+      const event = new CustomEvent("openChatbot");
+      window.dispatchEvent(event);
+    }, 500); // Retraso de 500ms para que el scroll termine antes de abrir el asistente
+  };
+
   return (
     <div className="p-3 sm:p-8 space-y-4 sm:space-y-8">
       <div className="flex justify-end">
@@ -120,7 +137,7 @@ export function ProductContent({
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              onClick={onContact}
+              onClick={handleContactClick}  // Usa la función handleContactClick
               className={`w-full sm:w-auto inline-flex items-center justify-center gap-2 
                          px-4 sm:px-6 py-2 sm:py-3 rounded-full
                          bg-gradient-to-r from-[var(--primary-blue)] via-[var(--accent-blue)] to-blue-400
