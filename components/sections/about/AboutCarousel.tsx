@@ -5,10 +5,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { ImageZoom } from "./ImageZoom";
-import { Link } from "react-scroll";
 
 const slides = {
   es: [
+    {
+      id: "products",
+      image: "/Images/Nosotros_Eng/NUESTROS PRODUCTOS.png",
+      title: "NUESTROS PRODUCTOS"
+    },
     {
       id: "mission-vision",
       image: "/Images/Brochure/Mision_Vision.png",
@@ -26,6 +30,11 @@ const slides = {
     }
   ],
   en: [
+    {
+      id: "products",
+      image: "/Images/Nosotros_Eng/NUESTROS PRODUCTOS INGLES.png",
+      title: "OUR PRODUCTS"
+    },
     {
       id: "mission-vision",
       image: "/Images/Nosotros_Eng/VISION VISION INGLES.png",
@@ -68,6 +77,7 @@ export function AboutCarousel() {
         {currentSlides.map((slide, index) => (
           <button
             key={slide.id}
+            data-id={slide.id}
             onClick={() => handleButtonClick(index)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300
               ${index === currentIndex && showImage
@@ -103,18 +113,13 @@ export function AboutCarousel() {
                 onDoubleClick={handleDoubleClick}
               />
 
-              {/* Close Button - Updated to use Link */}
-              <Link
-                to="home"
-                spy={true}
-                smooth={true}
-                offset={-64}
-                duration={500}
-                className="absolute top-4 right-4 p-2 rounded-full bg-white/80 hover:bg-white shadow-lg hover:shadow-xl transition-all duration-200 z-10 cursor-pointer"
+              {/* Close Button - Updated to use regular button */}
+              <button
                 onClick={() => setShowImage(false)}
+                className="absolute top-4 right-4 p-2 rounded-full bg-white/80 hover:bg-white shadow-lg hover:shadow-xl transition-all duration-200 z-10"
               >
-                <X className="w-5 h-5 text-gray-800" />
-              </Link>
+                <X className="h-5 w-5 text-gray-800" />
+              </button>
 
               {/* Navigation Arrows */}
               <button
