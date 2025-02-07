@@ -4,9 +4,12 @@ import { motion } from "framer-motion";
 import { Cloud, Server, Database, Code } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState, useRef } from "react";
 
 export function ServicesSection() {
   const { language } = useLanguage();
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const services = [
     {
@@ -65,6 +68,30 @@ export function ServicesSection() {
     }
   ];
 
+  const scrollToIndex = (index: number) => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const cardWidth = container.offsetWidth;
+      container.scrollTo({
+        left: cardWidth * index,
+        behavior: 'smooth'
+      });
+      setCurrentIndex(index);
+    }
+  };
+
+  const handleScroll = () => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      const cardWidth = container.offsetWidth;
+      const scrollPosition = container.scrollLeft;
+      const newIndex = Math.round(scrollPosition / cardWidth);
+      if (newIndex !== currentIndex) {
+        setCurrentIndex(newIndex);
+      }
+    }
+  };
+
   return (
     <section id="services" className="section-padding bg-gradient-to-b from-white to-[var(--bg-gradient-end)]">
       <div className="section-container">
@@ -87,38 +114,62 @@ export function ServicesSection() {
           </div>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          {services.map((service, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-            >
-              <Card className="h-full bg-white/80 backdrop-blur-sm border-gray-200 hover:border-[var(--primary-blue)] transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10">
-                <CardHeader>
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[var(--primary-blue)] to-[var(--accent-blue)] p-2 flex items-center justify-center mb-4 text-white">
-                    {service.icon}
-                  </div>
-                  <CardTitle className="text-2xl mb-2">{service.title}</CardTitle>
-                  <CardDescription className="text-lg font-medium text-gray-700">
-                    {service.subtitle}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-3">
-                    {service.features.map((feature, featureIndex) => (
-                      <li key={featureIndex} className="flex items-start gap-2">
-                        <Cloud className="h-5 w-5 text-[var(--primary-blue)] mt-1 flex-shrink-0" />
-                        <span className="text-gray-600">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
+        {/* Mobile-optimized container with navigation */}
+        <div className="relative -mx-4 px-4 md:mx-0 md:px-0">
+          <div 
+            ref={scrollContainerRef}
+            onScroll={handleScroll}
+            className="flex md:grid md:grid-cols-3 gap-6 overflow-x-auto snap-x snap-mandatory pb-6 md:pb-0 md:overflow-x-visible scrollbar-none"
+          >
+            {services.map((service, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="w-[85vw] max-w-[360px] flex-shrink-0 snap-center md:w-full"
+              >
+                <Card className="h-full bg-white/80 backdrop-blur-sm border-gray-200 hover:border-[var(--primary-blue)] transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10">
+                  <CardHeader>
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[var(--primary-blue)] to-[var(--accent-blue)] p-2 flex items-center justify-center mb-4 text-white">
+                      {service.icon}
+                    </div>
+                    <CardTitle className="text-2xl mb-2">{service.title}</CardTitle>
+                    <CardDescription className="text-lg font-medium text-gray-700">
+                      {service.subtitle}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-3">
+                      {service.features.map((feature, featureIndex) => (
+                        <li key={featureIndex} className="flex items-start gap-2">
+                          <Cloud className="h-5 w-5 text-[var(--primary-blue)] mt-1 flex-shrink-0" />
+                          <span className="text-gray-600">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Navigation Circles */}
+          <div className="flex justify-center gap-3 mt-6 md:hidden">
+            {services.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => scrollToIndex(index)}
+                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                  index === currentIndex
+                    ? 'bg-[var(--primary-blue)] scale-110'
+                    : 'bg-gray-300 hover:bg-gray-400'
+                }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
