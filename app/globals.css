@@ -21,7 +21,7 @@
 
   /* Modern Scrollbar */
   ::-webkit-scrollbar {
-    @apply w-2;
+    @apply w-1 sm:w-2;
   }
 
   ::-webkit-scrollbar-track {
@@ -36,14 +36,14 @@
 @layer components {
   /* Navigation Link */
   .nav-link {
-    @apply cursor-pointer px-2 sm:px-4 py-2 text-sm sm:text-base text-gray-600 transition-all duration-300 
+    @apply cursor-pointer px-2 sm:px-4 py-1.5 sm:py-2 text-sm sm:text-base text-gray-600 transition-all duration-300 
            hover:text-gray-900 relative after:absolute after:bottom-0 after:left-0 after:h-[2px] after:w-0 
            after:bg-gradient-to-r after:from-[var(--primary-blue)] after:to-[var(--accent-blue)] 
            after:transition-all after:duration-300 hover:after:w-full;
   }
 
   .section-padding {
-    @apply px-4 py-16 sm:py-20 md:py-24 md:px-6 lg:px-8;
+    @apply px-4 py-12 sm:py-16 md:py-20 lg:py-24 md:px-6 lg:px-8;
   }
 
   .section-container {
@@ -54,21 +54,21 @@
   .modern-card {
     @apply bg-white/80 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg 
            transition-all duration-300 hover:shadow-xl hover:bg-white/90
-           hover:border-[var(--primary-blue)];
+           hover:border-[var(--primary-blue)] sm:p-6 p-4;
   }
 
   /* Modern Button Styles */
   .modern-button {
-    @apply px-6 py-3 rounded-full bg-gradient-to-r from-[var(--primary-blue)] to-[var(--accent-blue)]
-           text-white font-medium transition-all duration-300 hover:shadow-lg
-           hover:scale-105 active:scale-95;
+    @apply px-4 sm:px-6 py-2 sm:py-3 rounded-full bg-gradient-to-r from-[var(--primary-blue)] to-[var(--accent-blue)]
+           text-white text-sm sm:text-base font-medium transition-all duration-300 hover:shadow-lg
+           hover:scale-105 active:scale-95 whitespace-nowrap;
   }
 
   /* Modern Input Styles */
   .modern-input {
-    @apply bg-white/70 backdrop-blur-sm border border-gray-200 rounded-lg px-4 py-2
+    @apply bg-white/70 backdrop-blur-sm border border-gray-200 rounded-lg px-3 sm:px-4 py-2
            focus:ring-2 focus:ring-[var(--primary-blue)]/20 focus:border-[var(--primary-blue)]
-           transition-all duration-300;
+           transition-all duration-300 text-sm sm:text-base;
   }
 
   /* Glass Effect */
@@ -78,8 +78,8 @@
 
   /* Modern Section Header */
   .section-header {
-    @apply text-4xl sm:text-5xl font-bold bg-gradient-to-r from-[var(--primary-blue)] 
-           to-[var(--accent-blue)] bg-clip-text text-transparent;
+    @apply text-3xl sm:text-4xl md:text-5xl font-bold bg-gradient-to-r from-[var(--primary-blue)] 
+           to-[var(--accent-blue)] bg-clip-text text-transparent leading-tight;
   }
 
   /* Background Grid Pattern */
@@ -87,6 +87,21 @@
     background-image: linear-gradient(to right, #e5e7eb 1px, transparent 1px),
                      linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
     background-size: 24px 24px;
+  }
+
+  /* Mobile-friendly text */
+  .mobile-text {
+    @apply text-sm sm:text-base leading-relaxed;
+  }
+
+  /* Mobile-friendly headings */
+  .mobile-heading {
+    @apply text-2xl sm:text-3xl md:text-4xl font-bold;
+  }
+
+  /* Mobile-friendly cards */
+  .mobile-card {
+    @apply p-4 sm:p-6 rounded-xl sm:rounded-2xl;
   }
 }
 
@@ -103,22 +118,57 @@
   .scale-102 {
     transform: scale(1.02);
   }
+
+  /* Mobile-friendly animations */
+  .mobile-hover {
+    @apply active:scale-95 sm:hover:scale-105 transition-transform duration-300;
+  }
 }
 
 /* Grid Layouts */
 @layer utilities {
   .auto-grid {
-    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6;
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6;
   }
 
   .feature-grid {
-    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6;
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6;
   }
 }
 
-/* Responsive Adjustments */
+/* Mobile-first Media Queries */
 @media (max-width: 640px) {
   .section-container {
     @apply px-4;
   }
+
+  /* Improved touch targets */
+  button, a {
+    @apply min-h-[44px] min-w-[44px] flex items-center justify-center;
+  }
+
+  /* Better spacing for mobile */
+  .mobile-spacing {
+    @apply space-y-4;
+  }
+
+  /* Optimized text for mobile */
+  .mobile-optimized {
+    @apply text-sm leading-relaxed tracking-wide;
+  }
+}
+
+/* Loading Skeleton Animation */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton-loading {
+  @apply bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 bg-[length:200%_100%];
+  animation: shimmer 1.5s infinite linear;
 }

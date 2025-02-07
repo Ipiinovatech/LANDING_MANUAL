@@ -1,13 +1,11 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ImageIcon, ImageOff, ExternalLink } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ExternalLink } from "lucide-react";
 import { VideoPlayer } from "./VideoPlayer";
 import { DemoButton } from "./DemoButton";
 import { Product } from "@/types/product";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Link } from "react-scroll";
 import { useState } from "react";
 
 interface ProductContentProps {
@@ -102,8 +100,7 @@ export function ProductContent({
         en: "VIRTUAL Quality FIELD is the web and mobile platform that revolutionizes real-time remote audits and supervision, enabling multimedia evidence collection to ensure service quality in sectors such as telecommunications, energy, gas, and medicine. Thanks to its integration with video analytics and artificial intelligence, it facilitates instant informed decision-making, optimizing processes and elevating customer satisfaction. Transform traditional supervision, boost efficiency, and strengthen customer relationships with VIRTUAL Quality FIELD"
       },
       "Virtual IPV": {
-        es: "VIRTUAL IPV es la solución integral para gestionar actividades en los puntos de venta, diseñada para optimizar las estrategias retail en grandes superficies y pequeñas tiendas. Con dos modos de ejecución, esta plataforma permite gestionar tareas como merchandising, promociones y análisis de competencia de manera eficiente. Su registro fotográfico georreferenciado y módulo móvil brindan la capacidad de tomar decisiones informadas al instante, transformando la gestión en los puntos de venta y fomentando la lealtad de los los clientes. Con VIRTUAL IPV, eleva su negocio y transforma su estrategia retail.",
-        en: "VIRTUAL IPV is the comprehensive solution for managing point-of-sale activities, designed to optimize retail strategies in large surfaces and small stores. With two execution modes, this platform allows efficient management of tasks such as merchandising, promotions, and competition analysis. Its georeferenced photographic record and mobile module provide the ability to make informed decisions instantly, transforming point-of-sale management and fostering customer loyalty. With VIRTUAL IPV, elevate your business and transform your retail strategy."
+        es: "VIRTUAL IPV es la solución integral para gestionar actividades en los puntos de venta, diseñada para optimizar las estrategias retail en grandes superficies y pequeñas tiendas. Con dos modos de ejecución, esta plataforma permite gestionar tareas como merchandising, promociones y análisis de competencia de manera eficiente. Su registro fotográfico georreferenciado y módulo móvil brindan la capacidad de tomar decisiones informadas al instante, transformando la gestión en los puntos de venta y fomentando la lealtad de los clientes. Con VIRTUAL IPV, eleva su negocio y transforma su estrategia retail.", en: "VIRTUAL IPV is the comprehensive solution for managing point-of-sale activities, designed to optimize retail strategies in large surfaces and small stores. With two execution modes, this platform allows efficient management of tasks such as merchandising, promotions, and competition analysis. Its georeferenced photographic record and mobile module provide the ability to make informed decisions instantly, transforming point-of-sale management and fostering customer loyalty. With VIRTUAL IPV, elevate your business and transform your retail strategy."
       }
     };
 
@@ -124,61 +121,9 @@ export function ProductContent({
 
   return (
     <div className="p-4 sm:p-8 space-y-6 sm:space-y-8">
-      <div className="flex justify-end">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={onToggleImage}
-          className="bg-white/5 hover:bg-white/10 text-white border-white/10
-                     transition-all duration-300 hover:scale-105 active:scale-95"
-        >
-          {showImage ? (
-            <>
-              <ImageOff className="h-4 w-4 mr-2" />
-              <span className="hidden sm:inline">
-                {language === "es" ? "Ocultar imagen" : "Hide image"}
-              </span>
-            </>
-          ) : (
-            <>
-              <ImageIcon className="h-4 w-4 mr-2" />
-              <span className="hidden sm:inline">
-                {language === "es" ? "Mostrar imagen" : "Show image"}
-              </span>
-            </>
-          )}
-        </Button>
-      </div>
-
-      {showImage && (
-        <motion.div
-          initial={{ opacity: 0, height: 0 }}
-          animate={{ opacity: 1, height: "auto" }}
-          exit={{ opacity: 0, height: 0 }}
-          transition={{ duration: 0.3 }}
-          className="relative w-full overflow-hidden rounded-xl"
-        >
-          <img
-            src={product.image}
-            alt={product.title}
-            className="w-full h-auto object-cover rounded-xl transform hover:scale-105 transition-transform duration-500"
-          />
-        </motion.div>
-      )}
-
-      {product.videoUrl && (
-        <div className="space-y-4">
-          <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-white">
-            {language === "es" ? "Video Explicativo" : "Explanatory Video"}
-          </h3>
-          <div className="w-full max-w-5xl mx-auto px-0">
-            <VideoPlayer videoUrl={product.videoUrl} title={product.title} />
-          </div>
-        </div>
-      )}
-
       <ScrollArea className="h-[calc(100vh-500px)] sm:h-auto pr-4">
         <div className="space-y-6 sm:space-y-8 max-w-[80ch] mx-auto">
+          {/* Description Section */}
           <div className="prose prose-invert max-w-none">
             <p className="text-gray-300 leading-relaxed text-lg mb-4">
               {product.description}
@@ -212,6 +157,36 @@ export function ProductContent({
             )}
           </div>
 
+          {/* Image Section */}
+          {showImage && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className="relative w-full overflow-hidden rounded-xl"
+            >
+              <img
+                src={product.image}
+                alt={product.title}
+                className="w-full h-auto object-cover rounded-xl transform hover:scale-105 transition-transform duration-500"
+              />
+            </motion.div>
+          )}
+
+          {/* Video Section */}
+          {product.videoUrl && (
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-white">
+                {language === "es" ? "Video Explicativo" : "Explanatory Video"}
+              </h3>
+              <div className="w-full max-w-5xl mx-auto px-0">
+                <VideoPlayer videoUrl={product.videoUrl} title={product.title} />
+              </div>
+            </div>
+          )}
+
+          {/* Action Buttons */}
           <div className="flex flex-wrap gap-3 sm:gap-4 pt-4">
             {product.demoUrl && (
               <DemoButton demoUrl={product.demoUrl} />

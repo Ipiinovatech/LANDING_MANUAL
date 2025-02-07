@@ -75,6 +75,8 @@ export function ProductModal({ isOpen, onClose, product }: ProductModalProps) {
           product={product} 
           onClose={onClose}
           onBack={handleBackToProducts}
+          showImage={showImage}
+          onToggleImage={() => setShowImage(!showImage)}
         />
 
         <ScrollArea 
