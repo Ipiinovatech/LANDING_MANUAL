@@ -32,7 +32,7 @@ const slides = {
   en: [
     {
       id: "products",
-      image: "/Images/Nosotros_Eng/NUESTROS PRODUCTOS INGLES.png",
+      image: "/Images/Nosotros_Eng/OUR PRODUCTS.PNG",
       title: "OUR PRODUCTS"
     },
     {

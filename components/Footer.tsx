@@ -9,7 +9,7 @@ export function Footer() {
   const socialLinks = [
     {
       icon: <Facebook className="h-6 w-6" />,
-      href: "https://www.facebook.com/ipinnovatech.ltda/",
+      href: "https://www.facebook.com/share/1BP7bZVZLr/",
       label: "Facebook"
     },
     {
