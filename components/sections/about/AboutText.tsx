@@ -43,11 +43,13 @@ export function AboutText() {
   };
 
   return (
-    <div className="w-full max-w-[98%] sm:max-w-[85%] mx-auto px-2 sm:px-0">
-      <div className="bg-white/80 backdrop-blur-sm p-4 sm:p-8 rounded-xl">
-        {/* Main text container with improved mobile margins */}
-        <div className="w-[94%] sm:w-[90%] mx-auto">
-          <p className="text-sm sm:text-lg text-gray-700 leading-relaxed font-medium text-justify break-words hyphens-none tracking-tight sm:tracking-normal">
+    <div className="w-full max-w-full sm:max-w-[85%] mx-0 sm:mx-auto">
+      <div className="bg-white/80 backdrop-blur-sm p-1 sm:p-8 rounded-xl">
+        {/* Contenedor del texto con márgenes reducidos en móviles */}
+        <div className="w-full sm:w-[90%] mx-auto px-2 sm:px-0">
+          <p className="text-sm sm:text-lg text-gray-700 font-medium text-justify 
+                       break-words hyphens-none tracking-tight sm:tracking-normal whitespace-normal
+                       [word-spacing:-1px] sm:word-spacing-normal leading-[1.2] sm:leading-relaxed">
             {texts[language].intro}
             {!isExpanded && (
               <button
@@ -66,13 +68,17 @@ export function AboutText() {
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
                 transition={{ duration: 0.3 }}
-                className="mt-6 space-y-6"
+                className="mt-3 space-y-3"
               >
-                <p className="text-sm sm:text-lg text-gray-700 leading-relaxed text-justify break-words hyphens-none tracking-tight sm:tracking-normal">
+                <p className="text-sm sm:text-lg text-gray-700 text-justify 
+                             break-words hyphens-none tracking-tight sm:tracking-normal whitespace-normal
+                             [word-spacing:-1px] sm:word-spacing-normal leading-[1.2] sm:leading-relaxed">
                   {texts[language].expanded.p1}
                 </p>
 
-                <p className="text-sm sm:text-lg text-gray-700 leading-relaxed text-justify break-words hyphens-none tracking-tight sm:tracking-normal">
+                <p className="text-sm sm:text-lg text-gray-700 text-justify 
+                             break-words hyphens-none tracking-tight sm:tracking-normal whitespace-normal
+                             [word-spacing:-1px] sm:word-spacing-normal leading-[1.2] sm:leading-relaxed">
                   {texts[language].expanded.p2}
                   <span className="inline-block align-middle mx-2">
                     <Image
@@ -87,11 +93,15 @@ export function AboutText() {
                   {texts[language].expanded.p3}
                 </p>
                 
-                <p className="text-sm sm:text-lg text-gray-700 leading-relaxed text-justify break-words hyphens-none tracking-tight sm:tracking-normal">
+                <p className="text-sm sm:text-lg text-gray-700 text-justify 
+                             break-words hyphens-none tracking-tight sm:tracking-normal whitespace-normal
+                             [word-spacing:-1px] sm:word-spacing-normal leading-[1.2] sm:leading-relaxed">
                   {texts[language].expanded.p4} <span className="font-semibold text-[var(--primary-blue)]">SaaS</span> ("Software como servicio"), <span className="font-semibold text-[var(--primary-blue)]">IaaS</span> ("Infraestructura como servicio"), y <span className="font-semibold text-[var(--primary-blue)]">PaaS</span> ("Plataforma como servicio").
                 </p>
                 
-                <p className="text-sm sm:text-lg text-gray-700 leading-relaxed text-justify break-words hyphens-none tracking-tight sm:tracking-normal">
+                <p className="text-sm sm:text-lg text-gray-700 text-justify 
+                             break-words hyphens-none tracking-tight sm:tracking-normal whitespace-normal
+                             [word-spacing:-1px] sm:word-spacing-normal leading-[1.2] sm:leading-relaxed">
                   {texts[language].expanded.p5} <span className="font-semibold text-[var(--primary-blue)]">CLOUD COMPUTING</span> {texts[language].expanded.p6} <span className="font-semibold text-[var(--primary-blue)]">AWS</span> ("Amazon Web Services"), {texts[language].expanded.p7} <span className="font-semibold text-[var(--primary-blue)]">IA (LLM)</span> {texts[language].expanded.p8} <span className="font-semibold text-[var(--primary-blue)]">Open IA</span>.
                 </p>
 
