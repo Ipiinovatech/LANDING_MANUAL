@@ -22,6 +22,13 @@ export function ProductHeader({
 }: ProductHeaderProps) {
   const { language } = useLanguage();
 
+  const handleImageClick = () => {
+    // Only handle click on mobile
+    if (window.innerWidth < 640) {
+      onToggleImage();
+    }
+  };
+
   return (
     <div className="relative p-10 border-b border-white/10 bg-gradient-to-r from-black via-[#1a1f35] to-black">
       <div className="absolute left-8 top-8">
@@ -48,8 +55,12 @@ export function ProductHeader({
       </button>
       
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8">
-        <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-[var(--primary-blue)] via-[var(--accent-blue)] to-blue-400 p-[2px] flex-shrink-0
-                      shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-shadow duration-300">
+        <div 
+          onClick={handleImageClick}
+          className="w-20 h-20 rounded-xl bg-gradient-to-br from-[var(--primary-blue)] via-[var(--accent-blue)] to-blue-400 p-[2px] flex-shrink-0
+                    shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-shadow duration-300
+                    sm:cursor-default cursor-pointer"
+        >
           <div className="w-full h-full rounded-xl overflow-hidden bg-black">
             <img 
               src={product.image} 
@@ -65,11 +76,12 @@ export function ProductHeader({
               {product.title}
             </h2>
             
+            {/* Hide button on mobile with hidden class */}
             <Button
               variant="outline"
               size="sm"
               onClick={onToggleImage}
-              className="bg-white/5 hover:bg-white/10 text-white border-white/10
+              className="hidden sm:inline-flex bg-white/5 hover:bg-white/10 text-white border-white/10
                        transition-all duration-300 hover:scale-105 active:scale-95
                        sm:ml-4 self-start sm:self-center whitespace-nowrap"
             >

@@ -39,7 +39,7 @@ export function AboutSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
-          className="w-full max-w-2xl md:max-w-3xl lg:max-w-4xl"
+          className="w-full max-w-2xl md:max-w-3xl lg:max-w-4xl mt-96"
         >
           <h2 className="text-5xl font-bold mb-16 bg-gradient-to-r from-[var(--primary-blue)] to-[var(--accent-blue)] bg-clip-text text-transparent text-center">
             {language === "es" ? "Nosotros" : "About Us"}
@@ -48,6 +48,27 @@ export function AboutSection() {
           <div className={`${!showBackground ? 'bg-white/90 backdrop-blur-md p-8 rounded-2xl shadow-lg' : ''}`}>
             <AboutText />
           </div>
+        </motion.div>
+
+        {/* Brochure Title and Image */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          viewport={{ once: true }}
+          className="mt-48 flex flex-col items-center gap-8"
+        >
+          <h2 className="text-4xl font-bold text-[var(--primary-blue)]">
+            BROCHURE 2025
+          </h2>
+          <Image
+            src="/Images/Home/BROCHURE_IPINNOVATECH_2025-4096.png"
+            alt="IPINNOVATECH Brochure"
+            width={300}
+            height={300}
+            className="object-contain"
+            priority
+          />
         </motion.div>
       </div>
     </section>
