@@ -213,8 +213,8 @@ export function useProducts() {
       isMultiservice: false,
       isVarios: true,
       videoUrl: {
-        es: "/Videos/PA YA/14.PAYA_1080p.mp4",
-        en: "/Videos/PA YA/14.PAYA_INGLES_1080p.mp4"
+        es: "/Videos/PA_YA/14.PAYA_1080p.mp4",
+        en: "/Videos/PA_YA/14.PAYA_INGLES_1080p.mp4"
       }
     },
     {
