@@ -17,9 +17,9 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   swcMinify: false, // Disable SWC minification
-  experimental: {
-    appDir: true
-  }
+  //experimental: {
+  //appDir: true
+  //}
 };
 
 module.exports = nextConfig;
