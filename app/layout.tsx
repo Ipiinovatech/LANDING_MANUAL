@@ -51,14 +51,14 @@ export default function RootLayout({
               t.src=v;s=b.getElementsByTagName(e)[0];
               s.parentNode.insertBefore(t,s)}(window, document,'script',
               'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', 'TU_ID_DE_PIXEL');  // Reemplaza TU_ID_DE_PIXEL con tu ID
+              fbq('init', '361600304689226');
               fbq('track', 'PageView');
             `,
           }}
         />
         <noscript>
           <img height="1" width="1" style="display:none"
-               src="https://www.facebook.com/tr?id=TU_ID_DE_PIXEL&ev=PageView&noscript=1"/>
+               src="https://www.facebook.com/tr?id=361600304689226&ev=PageView&noscript=1"/>
         </noscript>
       </head>
       <body className={`${inter.className} antialiased`}>
