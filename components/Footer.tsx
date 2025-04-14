@@ -54,7 +54,7 @@ export function Footer() {
               </li>
               <li className="flex items-start gap-2 text-gray-300">
                 <MapPin className="h-5 w-5 text-[var(--primary-blue)] flex-shrink-0" />
-                <span>Cali - Valle del Cauca</span>
+                <span>Cali - Valle del Cauca - Colombia</span>
               </li>
             </ul>
           </div>

@@ -10,15 +10,15 @@ import { useLanguage } from "@/contexts/LanguageContext";
 const desktopImages = {
   es: [
     {
-      src: "/Images/Home/HOME 3.0.jpg",
+      src: "/Images/Home/HOME 3.0.png",
       alt: "Home Image 1"
     },
     {
-      src: "/Images/Home/HOME PRUEBA 6.jpg",
+      src: "/Images/Home/HOME PRUEBA 6.png",
       alt: "Home Image 2"
     },
     {
-      src: "/Images/Home/HOME 5.0.jpg",
+      src: "/Images/Home/HOME 5.0.png",
       alt: "Home Image 3"
     }
   ],
@@ -72,6 +72,7 @@ const mobileImages = {
 export function HeroCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
   const { width } = useWindowSize();
   const { language } = useLanguage();
   const isMobile = width ? width < 768 : false;
@@ -134,41 +135,69 @@ export function HeroCarousel() {
           className="absolute inset-0 w-full h-full"
         >
           <div className="relative w-full h-full">
-            <Image
-              src={images[currentIndex].src}
-              alt={images[currentIndex].alt}
-              fill
-              priority
-              className={`object-cover ${isMobile ? 'object-contain bg-black' : ''}`}
-              sizes={isMobile ? "100vw" : "(max-width: 768px) 100vw, 100vw"}
-              quality={100}
-            />
-            <motion.div 
-              className="absolute inset-0 bg-black/30"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-            />
+            {!isImageLoaded && (
+              <div className="absolute inset-0 animate-pulse" />
+            )}
+            
+            {isMobile ? (
+              <div className="absolute inset-0 w-full h-full">
+                <Image
+                  src={images[currentIndex].src}
+                  alt={images[currentIndex].alt}
+                  fill
+                  priority
+                  className={`object-cover transition-opacity duration-300 ${
+                    isImageLoaded ? 'opacity-100' : 'opacity-0'
+                  }`}
+                  sizes="100vw"
+                  quality={100}
+                  unoptimized={true}
+                  loading="eager"
+                  onLoad={() => setIsImageLoaded(true)}
+                  onLoadingComplete={() => setIsImageLoaded(true)}
+                />
+              </div>
+            ) : (
+              <div className="absolute inset-0 flex items-center justify-center px-12">
+                <div className="relative w-full h-full max-w-[1600px] mx-auto">
+                  <Image
+                    src={images[currentIndex].src}
+                    alt={images[currentIndex].alt}
+                    fill
+                    priority
+                    className={`object-contain transition-opacity duration-300 ${
+                      isImageLoaded ? 'opacity-100' : 'opacity-0'
+                    }`}
+                    sizes="100vw"
+                    quality={100}
+                    unoptimized={true}
+                    loading="eager"
+                    onLoad={() => setIsImageLoaded(true)}
+                    onLoadingComplete={() => setIsImageLoaded(true)}
+                  />
+                </div>
+              </div>
+            )}
           </div>
         </motion.div>
       </AnimatePresence>
 
-      {/* Navigation Arrows */}
+      {/* Navigation buttons */}
       <button
-        className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300 z-20 backdrop-blur-sm"
+        className="absolute left-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300 z-50"
         onClick={() => paginate(-1)}
       >
         <ChevronLeft className="w-6 h-6 text-white" />
       </button>
       <button
-        className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300 z-20 backdrop-blur-sm"
+        className="absolute right-4 top-1/2 -translate-y-1/2 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300 z-50"
         onClick={() => paginate(1)}
       >
         <ChevronRight className="w-6 h-6 text-white" />
       </button>
 
       {/* Indicators */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-50">
         {images.map((_, index) => (
           <button
             key={index}

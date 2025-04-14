@@ -14,11 +14,12 @@ interface VideoPlayerProps {
 }
 
 export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
+  const { language } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const playerContainerRef = useRef<HTMLDivElement>(null);
-  const { language } = useLanguage();
+  const playerRef = useRef<ReactPlayer>(null);
 
   const currentVideoUrl = language === "es" ? videoUrl.es : videoUrl.en;
 
@@ -33,12 +34,12 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
     };
   }, []);
 
-  const handleError = () => {
+  const handleError = (e: any) => {
+    console.error('Video error:', e);
     setIsLoading(false);
     setError(language === "es" 
       ? "El video no está disponible en este momento" 
       : "The video is not available at this time");
-    console.error(`Error loading video for ${title}:`, currentVideoUrl);
   };
 
   const toggleFullscreen = async () => {
@@ -74,29 +75,32 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
       ) : (
         <div className="relative w-full h-full group">
           <ReactPlayer
+            ref={playerRef}
             url={currentVideoUrl}
             width="100%"
             height="100%"
             controls={true}
-            playsinline={true}
+            playing={false}
+            playsinline
+            config={{
+              file: {
+                attributes: {
+                  controlsList: 'nodownload',
+                  disablePictureInPicture: true,
+                  playsInline: true
+                },
+                forceVideo: true,
+                forceHLS: false,
+                forceFLV: false
+              }
+            }}
             onReady={() => {
               setIsLoading(false);
               setError(null);
             }}
             onError={handleError}
-            config={{
-              file: {
-                attributes: {
-                  controlsList: 'nodownload',
-                  playsInline: true,
-                  webkitPlaysInline: true,
-                  disablePictureInPicture: true,
-                  className: 'w-full h-full object-contain'
-                },
-                forceVideo: true,
-                forceFLV: false
-              }
-            }}
+            onBuffer={() => setIsLoading(true)}
+            onBufferEnd={() => setIsLoading(false)}
             style={{
               position: 'absolute',
               top: 0,
@@ -105,6 +109,7 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
             className="rounded-xl"
           />
           
+          {/* Fullscreen button */}
           <button
             onClick={toggleFullscreen}
             className="absolute top-4 right-4 p-2.5 bg-black/50 rounded-full text-white 

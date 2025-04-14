@@ -32,7 +32,7 @@ const slides = {
   en: [
     {
       id: "products",
-      image: "/Images/Nosotros_Eng/OUR PRODUCTS.PNG",
+      image: "/Images/Nosotros_Eng/NUESTROS PRODUCTOS INGLES.png",
       title: "OUR PRODUCTS"
     },
     {
@@ -113,7 +113,7 @@ export function AboutCarousel() {
                 onDoubleClick={handleDoubleClick}
               />
 
-              {/* Close Button - Updated to use regular button */}
+              {/* Close Button */}
               <button
                 onClick={() => setShowImage(false)}
                 className="absolute top-4 right-4 p-2 rounded-full bg-white/80 hover:bg-white shadow-lg hover:shadow-xl transition-all duration-200 z-10"

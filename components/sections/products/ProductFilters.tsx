@@ -40,7 +40,7 @@ export function ProductFilters({ currentFilter, onFilterChange }: ProductFilters
             : 'bg-white/80 text-gray-700 hover:bg-white/90 border border-gray-200'
           }`}
       >
-        {language === "es" ? "Varios" : "Others"}
+        {language === "es" ? "Otros" : "Others"}
       </button>
     </div>
   );

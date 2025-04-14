@@ -12,31 +12,39 @@ interface ProductModalProps {
   isOpen: boolean;
   onClose: () => void;
   product: Product;
+  showImageOnMobile: boolean;
 }
 
-export function ProductModal({ isOpen, onClose, product }: ProductModalProps) {
+export function ProductModal({ 
+  isOpen, 
+  onClose, 
+  product,
+  showImageOnMobile
+}: ProductModalProps) {
   const { language } = useLanguage();
   const [showImage, setShowImage] = useState(false);
+
+  // Update showImage when modal opens based on mobile click
+  useEffect(() => {
+    if (isOpen) {
+      setShowImage(showImageOnMobile);
+    }
+  }, [isOpen, showImageOnMobile]);
 
   // Handle browser back button
   useEffect(() => {
     if (isOpen) {
-      // Push a new state when modal opens
       window.history.pushState({ modal: true }, "");
     }
 
-    // Handle popstate (back button)
-    const handlePopState = (event: PopStateEvent) => {
+    const handlePopState = () => {
       if (isOpen) {
         onClose();
       }
     };
 
     window.addEventListener('popstate', handlePopState);
-
-    return () => {
-      window.removeEventListener('popstate', handlePopState);
-    };
+    return () => window.removeEventListener('popstate', handlePopState);
   }, [isOpen, onClose]);
 
   const handleContactClick = () => {
@@ -55,13 +63,10 @@ export function ProductModal({ isOpen, onClose, product }: ProductModalProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => {
-      if (!open) {
-        // If modal is closing, go back in history
-        if (window.history.state?.modal) {
-          window.history.back();
-        }
-        onClose();
+      if (!open && window.history.state?.modal) {
+        window.history.back();
       }
+      onClose();
     }}>
       <DialogContent 
         className="max-w-[95vw] w-[1400px] max-h-[95vh] p-0 overflow-hidden

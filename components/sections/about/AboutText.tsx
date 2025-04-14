@@ -43,10 +43,10 @@ export function AboutText() {
   };
 
   return (
-    <div className="w-full max-w-full sm:max-w-[85%] mx-0 sm:mx-auto">
+    <div className="w-full max-w-full sm:max-w-[85%] mx-0 sm:mx-auto mt-0 md:mt-48">
       <div className="bg-white/80 backdrop-blur-sm p-1 sm:p-8 rounded-xl">
-        {/* Contenedor del texto con márgenes reducidos en móviles */}
-        <div className="w-full sm:w-[90%] mx-auto px-2 sm:px-0">
+        {/* Main text container with maximum mobile margins */}
+        <div className="w-[99%] sm:w-[90%] mx-auto">
           <p className="text-sm sm:text-lg text-gray-700 font-medium text-justify 
                        break-words hyphens-none tracking-tight sm:tracking-normal whitespace-normal
                        [word-spacing:-1px] sm:word-spacing-normal leading-[1.2] sm:leading-relaxed">

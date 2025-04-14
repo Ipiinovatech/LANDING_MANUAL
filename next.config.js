@@ -17,9 +17,15 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   swcMinify: false, // Disable SWC minification
-  //experimental: {
-  //appDir: true
-  //}
+  experimental: {
+    appDir: true
+  },
+  // Add assetPrefix for static assets in production
+  assetPrefix: process.env.NODE_ENV === 'production' ? '.' : '',
+  // Configure base path
+  basePath: '',
+  // Enable trailing slashes
+  trailingSlash: true,
 };
 
 module.exports = nextConfig;

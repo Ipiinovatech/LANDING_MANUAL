@@ -13,7 +13,7 @@ export function ServicesSection() {
 
   const services = [
     {
-      icon: <Code className="h-6 w-6" />,
+      icon: <Code className="h-10 w-10" />,
       title: "SaaS",
       subtitle: language === "es" ? "Software como servicio" : "Software as a Service",
       features: language === "es" 
@@ -31,7 +31,7 @@ export function ServicesSection() {
         ]
     },
     {
-      icon: <Server className="h-6 w-6" />,
+      icon: <Server className="h-10 w-10" />,
       title: "IaaS",
       subtitle: language === "es" ? "Infraestructura como servicio" : "Infrastructure as a Service",
       features: language === "es"
@@ -49,7 +49,7 @@ export function ServicesSection() {
         ]
     },
     {
-      icon: <Database className="h-6 w-6" />,
+      icon: <Database className="h-10 w-10" />,
       title: "PaaS",
       subtitle: language === "es" ? "Plataforma como servicio" : "Platform as a Service",
       features: language === "es"
@@ -106,7 +106,7 @@ export function ServicesSection() {
             {language === "es" ? "Nuestros Servicios" : "Our Services"}
           </h2>
           <div className="max-w-4xl mx-auto">
-            <p className="text-xl text-gray-700 mb-8">
+            <p className="text-xl text-gray-700 mb-8 text-justify px-4 md:text-center md:px-0">
               {language === "es"
                 ? "Además de nuestros productos, nos especializamos en desarrollar servicios para nuestros clientes basados en Cloud Computing o Servicios en la Nube, qué es una tecnología que permite acceso remoto a software, almacenamiento de archivos y procesamiento de datos a través de internet, sin necesidad de instalar aplicaciones localmente."
                 : "In addition to our products, we specialize in developing services for our clients based on Cloud Computing or Cloud Services, which is a technology that allows remote access to software, file storage, and data processing through the internet, without the need to install applications locally."}
@@ -131,21 +131,21 @@ export function ServicesSection() {
                 className="w-[85vw] max-w-[360px] flex-shrink-0 snap-center md:w-full"
               >
                 <Card className="h-full bg-white/80 backdrop-blur-sm border-gray-200 hover:border-[var(--primary-blue)] transition-all duration-300 hover:shadow-lg hover:shadow-blue-500/10">
-                  <CardHeader>
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[var(--primary-blue)] to-[var(--accent-blue)] p-2 flex items-center justify-center mb-4 text-white">
+                  <CardHeader className="space-y-4 p-6 pb-2">
+                    <div className="w-20 h-20 rounded-full bg-gradient-to-r from-[var(--primary-blue)] to-[var(--accent-blue)] p-4 flex items-center justify-center mb-4 text-white mx-auto">
                       {service.icon}
                     </div>
-                    <CardTitle className="text-2xl mb-2">{service.title}</CardTitle>
-                    <CardDescription className="text-lg font-medium text-gray-700">
+                    <CardTitle className="text-2xl mb-2 text-center">{service.title}</CardTitle>
+                    <CardDescription className="text-lg font-medium text-gray-700 text-center">
                       {service.subtitle}
                     </CardDescription>
                   </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-3">
+                  <CardContent className="p-6">
+                    <ul className="space-y-4">
                       {service.features.map((feature, featureIndex) => (
-                        <li key={featureIndex} className="flex items-start gap-2">
-                          <Cloud className="h-5 w-5 text-[var(--primary-blue)] mt-1 flex-shrink-0" />
-                          <span className="text-gray-600">{feature}</span>
+                        <li key={featureIndex} className="flex items-start gap-4 text-justify">
+                          <Cloud className="h-7 w-7 text-[var(--primary-blue)] mt-1 flex-shrink-0" />
+                          <span className="text-gray-600 flex-1">{feature}</span>
                         </li>
                       ))}
                     </ul>

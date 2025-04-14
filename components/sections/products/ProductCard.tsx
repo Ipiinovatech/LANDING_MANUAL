@@ -18,6 +18,26 @@ export function ProductCard({
 }: ProductCardProps) {
   const { language } = useLanguage();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showImageFromClick, setShowImageFromClick] = useState(false);
+  const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  const handleImageClick = () => {
+    if (window.innerWidth < 640) {
+      setShowImageFromClick(true);
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setShowImageFromClick(false);
+  };
+
+  // Determine if we need special handling for mobile
+  const needsSpecialHandling = [
+    "TestQAI",
+    "¡Pa Ya!"
+  ].includes(product.title);
 
   return (
     <>
@@ -31,15 +51,37 @@ export function ProductCard({
       >
         <Card className="relative h-full bg-gradient-to-br from-gray-900/90 to-black border-gray-800 hover:border-[var(--primary-blue)] transition-all duration-500 overflow-hidden">
           {/* Image Header */}
-          <div className="relative h-48 overflow-hidden">
-            {product.image && (
-              <img
-                src={product.image}
-                alt={product.title}
-                className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-              />
+          <div 
+            className="relative h-48 overflow-hidden cursor-pointer sm:cursor-default"
+            onClick={handleImageClick}
+          >
+            {/* Loading placeholder */}
+            {!isImageLoaded && (
+              <div className="absolute inset-0 bg-gray-800 animate-pulse" />
             )}
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60" />
+
+            {product.image && (
+              <div className="absolute inset-0 w-full h-full">
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  className={`w-full h-full transition-all duration-500 
+                    ${needsSpecialHandling 
+                      ? 'sm:object-cover max-sm:object-contain max-sm:bg-gradient-to-br max-sm:from-gray-100 max-sm:to-gray-200 max-sm:p-4'
+                      : 'object-cover'
+                    } 
+                    ${isImageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                  onLoad={() => setIsImageLoaded(true)}
+                  loading="lazy"
+                />
+              </div>
+            )}
+            
+            <div className={`absolute inset-0 bg-gradient-to-b ${
+              needsSpecialHandling 
+                ? 'sm:from-transparent sm:to-black/60 max-sm:from-transparent max-sm:to-black/40'
+                : 'from-transparent to-black/60'
+            }`} />
             
             {/* Video & Demo Indicators */}
             <div className="absolute top-4 right-4 flex gap-2">
@@ -58,20 +100,23 @@ export function ProductCard({
 
           {/* Content */}
           <div className="p-6">
-            {/* Title */}
-            <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[var(--accent-blue)] transition-colors duration-300">
+            <h3 className="text-lg font-bold text-white mb-3 
+                         group-hover:text-[var(--accent-blue)] transition-colors duration-300 
+                         line-clamp-2 min-h-[3rem]
+                         break-words hyphens-auto">
               {product.title}
             </h3>
 
-            {/* Description */}
-            <p className="text-gray-400 text-sm line-clamp-4 mb-6">
+            <p className="text-sm text-gray-400 line-clamp-4 mb-6">
               {product.description}
             </p>
 
-            {/* Action Button */}
             <button 
-              onClick={() => setIsModalOpen(true)}
-              className="inline-flex items-center text-[var(--primary-blue)] hover:text-[var(--accent-blue)] transition-colors duration-300 group/btn mt-auto"
+              onClick={() => {
+                setShowImageFromClick(false);
+                setIsModalOpen(true);
+              }}
+              className="inline-flex items-center text-[var(--primary-blue)] hover:text-[var(--accent-blue)] transition-colors duration-300 group/btn"
             >
               <span className="mr-2">
                 {language === "es" ? "Saber más" : "Learn more"}
@@ -84,8 +129,9 @@ export function ProductCard({
 
       <ProductModal
         isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        onClose={handleModalClose}
         product={product}
+        showImageOnMobile={showImageFromClick}
       />
     </>
   );
