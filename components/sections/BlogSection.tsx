@@ -35,7 +35,7 @@ export function BlogSection() {
         : "We launch our latest artificial intelligence solution for process optimization",
       date: "2024-03-10",
       category: language === "es" ? "Tecnología" : "Technology",
-      image: "/Images/Noticias/Noticias_2.jpg"
+      image: language === "es" ? "/Images/Noticias/Noticias_2.jpg" : "/Images/Noticias/Noticias_2.jpg"
     },
     {
       title: language === "es"

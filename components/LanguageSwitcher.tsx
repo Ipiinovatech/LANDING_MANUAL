@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react"; // Añade useEffect
 import { motion, AnimatePresence } from "framer-motion";
 import { Globe } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -12,12 +12,28 @@ const languages = [
 
 export default function LanguageSwitcher() {
   const [isOpen, setIsOpen] = useState(false);
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, version } = useLanguage(); // Añade version
+
+  // Nueva función: fuerza recarga de imágenes
+  const reloadImages = () => {
+    const images = document.querySelectorAll("img");
+    images.forEach(img => {
+      const src = img.getAttribute("src");
+      if (src) {
+        img.setAttribute("src", src.split("?")[0] + `?lang=${language}&v=${version}`);
+      }
+    });
+  };
 
   const handleLanguageChange = (langCode: "en" | "es") => {
     setLanguage(langCode);
     setIsOpen(false);
   };
+
+  // Efecto que se dispara al cambiar idioma/versión
+  useEffect(() => {
+    reloadImages();
+  }, [language, version]);
 
   return (
     <div className="relative">
