@@ -54,6 +54,9 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
     }
   };
 
+  // Detect iOS devices
+  const isIOS = typeof navigator !== 'undefined' && /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
   return (
     <div 
       ref={playerContainerRef}
@@ -85,12 +88,14 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
             config={{
               file: {
                 attributes: {
+                  playsInline: true,
+                  webkitPlaysinline: "true",
                   controlsList: 'nodownload',
                   disablePictureInPicture: true,
-                  playsInline: true
+                  preload: "auto"
                 },
                 forceVideo: true,
-                forceHLS: false,
+                forceHLS: isIOS,
                 forceFLV: false
               }
             }}
