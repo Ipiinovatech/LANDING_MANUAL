@@ -19,11 +19,9 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
   const [error, setError] = useState<string | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const playerContainerRef = useRef<HTMLDivElement>(null);
-  const playerRef = useRef<ReactPlayer>(null);
-
+  const videoRef = useRef<HTMLVideoElement>(null);
   const currentVideoUrl = language === "es" ? videoUrl.es : videoUrl.en;
 
-  // iOS detection (segura y moderna)
   const isIOS =
     typeof navigator !== "undefined" &&
     /iPad|iPhone|iPod/.test(navigator.userAgent);
@@ -39,14 +37,18 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
     };
   }, []);
 
-  const handleError = (e: any) => {
-    console.error("Video error:", e);
+  const handleError = () => {
     setIsLoading(false);
     setError(
       language === "es"
         ? "El video no está disponible en este momento"
         : "The video is not available at this time"
     );
+  };
+
+  const handleLoaded = () => {
+    setIsLoading(false);
+    setError(null);
   };
 
   const toggleFullscreen = async () => {
@@ -79,39 +81,48 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
         </div>
       ) : (
         <div className="relative w-full h-full group">
-          <ReactPlayer
-            ref={playerRef}
-            url={currentVideoUrl}
-            width="100%"
-            height="100%"
-            controls={true}
-            playing={false}
-            playsinline
-            config={{
-              file: {
-                attributes: {
-                  playsInline: true,
-                  webkitPlaysinline: "true",
-                  controlsList: "nodownload",
-                  disablePictureInPicture: true,
-                  preload: "auto",
+          {isIOS ? (
+            <video
+              ref={videoRef}
+              src={currentVideoUrl}
+              className="w-full h-full rounded-xl object-cover"
+              controls
+              playsInline
+              preload="auto"
+              onLoadedData={handleLoaded}
+              onError={handleError}
+            />
+          ) : (
+            <ReactPlayer
+              url={currentVideoUrl}
+              width="100%"
+              height="100%"
+              controls={true}
+              playing={false}
+              playsinline
+              config={{
+                file: {
+                  attributes: {
+                    playsInline: true,
+                    webkitPlaysinline: "true",
+                    controlsList: "nodownload",
+                    disablePictureInPicture: true,
+                    preload: "auto",
+                  },
                 },
-              },
-            }}
-            onReady={() => {
-              setIsLoading(false);
-              setError(null);
-            }}
-            onError={handleError}
-            onBuffer={() => setIsLoading(true)}
-            onBufferEnd={() => setIsLoading(false)}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-            }}
-            className="rounded-xl"
-          />
+              }}
+              onReady={handleLoaded}
+              onError={handleError}
+              onBuffer={() => setIsLoading(true)}
+              onBufferEnd={() => setIsLoading(false)}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+              }}
+              className="rounded-xl"
+            />
+          )}
 
           {/* Fullscreen button */}
           <button
