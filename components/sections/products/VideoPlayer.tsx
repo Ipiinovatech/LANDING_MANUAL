@@ -20,7 +20,7 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
   const currentVideoUrl = language === "es" ? videoUrl.es : videoUrl.en;
 
   return (
-    <div className="relative aspect-video w-full">
+    <div className="relative w-full max-w-[720px] mx-auto aspect-video rounded-xl overflow-hidden">
       {isLoading && !error && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-10">
           <Loader2 className="h-8 w-8 animate-spin text-[var(--primary-blue)]" />
@@ -35,35 +35,37 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
           </p>
         </div>
       ) : (
-        <ReactPlayer
-          url={currentVideoUrl}
-          width="100%"
-          height="100%"
-          controls
-          playing={false}
-          playsinline
-          config={{
-            file: {
-              attributes: {
-                preload: "auto",
-                playsInline: true,
-                webkitPlaysinline: "true",
-                controlsList: "nodownload",
+        <div className="absolute inset-0">
+          <ReactPlayer
+            url={currentVideoUrl}
+            width="100%"
+            height="100%"
+            controls
+            playing={false}
+            playsinline
+            config={{
+              file: {
+                attributes: {
+                  preload: "auto",
+                  playsInline: true,
+                  webkitPlaysinline: "true",
+                  controlsList: "nodownload",
+                },
               },
-            },
-          }}
-          onReady={() => setIsLoading(false)}
-          onError={(e) => {
-            console.error("Video error:", e);
-            setIsLoading(false);
-            setError(
-              language === "es"
-                ? "El video no está disponible en este momento"
-                : "The video is not available at this time"
-            );
-          }}
-          className="rounded-xl"
-        />
+            }}
+            onReady={() => setIsLoading(false)}
+            onError={(e) => {
+              console.error("Video error:", e);
+              setIsLoading(false);
+              setError(
+                language === "es"
+                  ? "El video no está disponible en este momento"
+                  : "The video is not available at this time"
+              );
+            }}
+            className="rounded-xl"
+          />
+        </div>
       )}
     </div>
   );
