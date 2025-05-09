@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import ReactPlayer from "react-player";
-import { Loader2, AlertCircle, Maximize2, Minimize2 } from "lucide-react";
+import { Loader2, AlertCircle } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 
 interface VideoPlayerProps {
@@ -17,59 +17,12 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
   const { language } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const playerContainerRef = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
   const currentVideoUrl = language === "es" ? videoUrl.es : videoUrl.en;
 
-  const isIOS =
-    typeof navigator !== "undefined" &&
-    /iPad|iPhone|iPod/.test(navigator.userAgent);
-
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-
-    document.addEventListener("fullscreenchange", handleFullscreenChange);
-    return () => {
-      document.removeEventListener("fullscreenchange", handleFullscreenChange);
-    };
-  }, []);
-
-  const handleError = () => {
-    setIsLoading(false);
-    setError(
-      language === "es"
-        ? "El video no está disponible en este momento"
-        : "The video is not available at this time"
-    );
-  };
-
-  const handleLoaded = () => {
-    setIsLoading(false);
-    setError(null);
-  };
-
-  const toggleFullscreen = async () => {
-    try {
-      if (!document.fullscreenElement && playerContainerRef.current) {
-        await playerContainerRef.current.requestFullscreen();
-      } else if (document.fullscreenElement) {
-        await document.exitFullscreen();
-      }
-    } catch (err) {
-      console.error("Error toggling fullscreen:", err);
-    }
-  };
-
   return (
-    <div
-      ref={playerContainerRef}
-      className="relative w-full aspect-video bg-black/90 rounded-xl overflow-hidden shadow-lg"
-    >
+    <div className="relative aspect-video w-full">
       {isLoading && !error && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-10">
+        <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-10">
           <Loader2 className="h-8 w-8 animate-spin text-[var(--primary-blue)]" />
         </div>
       )}
@@ -77,70 +30,40 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
       {error ? (
         <div className="flex flex-col items-center justify-center gap-4 text-white/80 h-full">
           <AlertCircle className="h-12 w-12 text-red-500" />
-          <p className="text-center max-w-md px-4">{error}</p>
+          <p className="text-center max-w-md px-4">
+            {error}
+          </p>
         </div>
       ) : (
-        <div className="relative w-full h-full group">
-          {isIOS ? (
-            <video
-              ref={videoRef}
-              src={currentVideoUrl}
-              className="w-full h-full object-cover rounded-xl"
-              controls
-              playsInline
-              webkit-playsinline="true"
-              preload="auto"
-              onLoadedData={handleLoaded}
-              onError={handleError}
-            />
-          ) : (
-            <ReactPlayer
-              url={currentVideoUrl}
-              width="100%"
-              height="100%"
-              controls={true}
-              playing={false}
-              playsinline
-              config={{
-                file: {
-                  attributes: {
-                    playsInline: true,
-                    webkitPlaysinline: "true",
-                    controlsList: "nodownload",
-                    disablePictureInPicture: true,
-                    preload: "auto",
-                  },
-                },
-              }}
-              onReady={handleLoaded}
-              onError={handleError}
-              onBuffer={() => setIsLoading(true)}
-              onBufferEnd={() => setIsLoading(false)}
-              style={{
-                position: "absolute",
-                top: 0,
-                left: 0,
-              }}
-              className="rounded-xl"
-            />
-          )}
-
-          {/* Fullscreen button */}
-          <button
-            onClick={toggleFullscreen}
-            className="absolute top-4 right-4 p-2.5 bg-black/50 rounded-full text-white 
-                     opacity-0 group-hover:opacity-100
-                     transition-opacity duration-300 hover:bg-black/70 z-20
-                     md:block hidden"
-            aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
-          >
-            {isFullscreen ? (
-              <Minimize2 className="h-5 w-5" />
-            ) : (
-              <Maximize2 className="h-5 w-5" />
-            )}
-          </button>
-        </div>
+        <ReactPlayer
+          url={currentVideoUrl}
+          width="100%"
+          height="100%"
+          controls
+          playing={false}
+          playsinline
+          config={{
+            file: {
+              attributes: {
+                preload: "auto",
+                playsInline: true,
+                webkitPlaysinline: "true",
+                controlsList: "nodownload",
+              },
+            },
+          }}
+          onReady={() => setIsLoading(false)}
+          onError={(e) => {
+            console.error("Video error:", e);
+            setIsLoading(false);
+            setError(
+              language === "es"
+                ? "El video no está disponible en este momento"
+                : "The video is not available at this time"
+            );
+          }}
+          className="rounded-xl"
+        />
       )}
     </div>
   );
