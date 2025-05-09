@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
-import { Loader2, AlertCircle, Maximize2, Minimize2 } from "lucide-react";
+import { Loader2, AlertCircle, Maximize2, Minimize2, Play } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import Hls from "hls.js";
 import screenfull from "screenfull";
@@ -103,7 +103,7 @@ export function VideoPlayer({ videoUrl, title }: VideoPlayerProps) {
         minAutoBitrate: 0,
         emeEnabled: false,
         widevineLicenseUrl: undefined,
-        drmSystemOptions: {},
+        drmSystemOptions: {}
       });
       
       if (playerRef.current) {
