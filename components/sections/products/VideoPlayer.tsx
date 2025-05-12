@@ -3,8 +3,8 @@
 import { useRef, useState, useEffect } from "react";
 import ReactPlayer from "react-player";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Maximize2, Minimize2 } from "lucide-react";
 import screenfull from "screenfull";
+import { Maximize2, Minimize2 } from "lucide-react";
 
 interface VideoPlayerProps {
   videoUrl: {
@@ -17,31 +17,26 @@ interface VideoPlayerProps {
 
 export function VideoPlayer({ videoUrl, title, poster }: VideoPlayerProps) {
   const { language } = useLanguage();
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<ReactPlayer>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const currentVideoUrl = language === "es" ? videoUrl.es : videoUrl.en;
 
-  const isIOS =
-    typeof navigator !== "undefined" &&
-    /iPad|iPhone|iPod/.test(navigator.userAgent);
-
   useEffect(() => {
-    const handleFullscreen = () => {
+    const handleFullscreenChange = () => {
       if (screenfull.isEnabled) {
         setIsFullscreen(screenfull.isFullscreen);
       }
     };
 
     if (screenfull.isEnabled) {
-      screenfull.on("change", handleFullscreen);
+      screenfull.on("change", handleFullscreenChange);
     }
 
     return () => {
       if (screenfull.isEnabled) {
-        screenfull.off("change", handleFullscreen);
+        screenfull.off("change", handleFullscreenChange);
       }
     };
   }, []);
@@ -55,7 +50,7 @@ export function VideoPlayer({ videoUrl, title, poster }: VideoPlayerProps) {
   return (
     <div
       ref={containerRef}
-      className={`relative bg-black rounded-xl shadow-lg w-full aspect-video overflow-hidden ${
+      className={`relative bg-black w-full aspect-video rounded-xl overflow-hidden shadow-lg ${
         isFullscreen ? "fixed inset-0 z-50 rounded-none" : ""
       }`}
     >
@@ -65,7 +60,7 @@ export function VideoPlayer({ videoUrl, title, poster }: VideoPlayerProps) {
         width="100%"
         height="100%"
         controls
-        playing={isPlaying}
+        playing
         playsinline
         config={{
           file: {
@@ -75,23 +70,18 @@ export function VideoPlayer({ videoUrl, title, poster }: VideoPlayerProps) {
               webkitPlaysinline: "true",
               preload: "auto",
               controlsList: "nodownload",
-              disablePictureInPicture: true
-            }
-          }
+              disablePictureInPicture: true,
+            },
+          },
         }}
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
         onError={(e) => {
           console.error("Error reproduciendo el video:", e);
         }}
       />
 
-      {/* Botón de pantalla completa */}
       <button
         onClick={toggleFullscreen}
-        className="absolute top-4 right-4 p-2.5 bg-black/60 rounded-full text-white z-20
-                   transition-opacity duration-300 hover:bg-black/80
-                   md:block hidden"
+        className="absolute top-4 right-4 p-2 bg-black/60 rounded-full text-white z-10 hover:bg-black/80"
         aria-label={isFullscreen ? "Salir de pantalla completa" : "Ver en pantalla completa"}
       >
         {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
