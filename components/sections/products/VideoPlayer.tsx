@@ -16,8 +16,8 @@ interface VideoPlayerProps {
 
 export function VideoPlayer({ videoUrl, title, poster }: VideoPlayerProps) {
   const { language } = useLanguage();
-  const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const currentVideoUrl = language === "es" ? videoUrl.es : videoUrl.en;
 
   const toggleFullscreen = () => {
@@ -29,7 +29,7 @@ export function VideoPlayer({ videoUrl, title, poster }: VideoPlayerProps) {
   return (
     <div
       ref={containerRef}
-      className="relative w-full aspect-video bg-black rounded-xl overflow-hidden shadow-lg"
+      className={`relative bg-black w-full aspect-video overflow-hidden rounded-xl shadow-lg`}
     >
       <video
         ref={videoRef}
@@ -39,7 +39,14 @@ export function VideoPlayer({ videoUrl, title, poster }: VideoPlayerProps) {
         webkit-playsinline="true"
         poster={poster}
         preload="metadata"
-        className="w-full h-full object-contain rounded-xl"
+        className="w-full h-full object-contain"
+        style={{
+          display: 'block',
+          maxWidth: '100%',
+          height: '100%',
+          margin: '0 auto',
+          backgroundColor: 'black'
+        }}
       />
 
       <button
