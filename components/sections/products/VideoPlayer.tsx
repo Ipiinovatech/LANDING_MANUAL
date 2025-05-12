@@ -2,8 +2,8 @@
 
 import { useRef } from "react";
 import { useLanguage } from "@/contexts/LanguageContext";
-import { Maximize2, Minimize2 } from "lucide-react";
 import screenfull from "screenfull";
+import { Maximize2, Minimize2 } from "lucide-react";
 
 interface VideoPlayerProps {
   videoUrl: {
