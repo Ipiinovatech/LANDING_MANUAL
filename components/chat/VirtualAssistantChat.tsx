@@ -9,14 +9,14 @@ interface VirtualAssistantChatProps {
   onClose: () => void;
   language: string;
   isSubmitting: boolean;
-  onSubmit: () => void;
+  onSubmit: (data: any) => void;
 }
 
 export function VirtualAssistantChat({
   onClose,
   language,
   isSubmitting,
-  onSubmit
+  onSubmit,
 }: VirtualAssistantChatProps) {
   return (
     <motion.div
@@ -42,7 +42,7 @@ export function VirtualAssistantChat({
 
       <ScrollArea className="h-[calc(90vh-64px)] sm:h-[calc(80vh-64px)]">
         <div className="p-6">
-          <VirtualAssistantForm 
+          <VirtualAssistantForm
             onSubmit={onSubmit}
             isSubmitting={isSubmitting}
           />

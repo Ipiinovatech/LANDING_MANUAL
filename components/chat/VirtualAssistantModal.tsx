@@ -1,7 +1,7 @@
 "use client";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import ReCAPTCHA from "react-google-recaptcha";
 
 interface VirtualAssistantModalProps {
@@ -9,7 +9,7 @@ interface VirtualAssistantModalProps {
   onClose: () => void;
   onVerify: () => void;
   isVerified: boolean;
-  setIsVerified: (verified: boolean) => void;
+  setIsVerified: (value: boolean) => void;
   isSubmitting: boolean;
   language: string;
 }
@@ -21,44 +21,42 @@ export function VirtualAssistantModal({
   isVerified,
   setIsVerified,
   isSubmitting,
-  language
+  language,
 }: VirtualAssistantModalProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="bg-white border-2 border-[var(--primary-blue)] shadow-xl max-w-md">
-        <DialogHeader className="border-b border-gray-200 pb-4">
-          <DialogTitle className="text-xl font-semibold text-gray-900">
-            {language === "es" 
-              ? "Verificación de Seguridad" 
-              : "Security Verification"}
-          </DialogTitle>
-        </DialogHeader>
-        <div className="flex flex-col items-center gap-6 py-6 px-4 bg-white">
-          <p className="text-base text-gray-700 text-center font-medium">
-            {language === "es" 
-              ? "Por favor, completa la verificación para enviar tu mensaje"
-              : "Please complete the verification to send your message"}
-          </p>
-          <div className="transform hover:scale-[1.01] transition-transform bg-white p-4 rounded-lg shadow-sm">
-            <ReCAPTCHA
-              sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-              onChange={(value) => setIsVerified(!!value)}
-              theme="light"
-              size="normal"
-            />
-          </div>
-          <Button
-            onClick={onVerify}
-            className={`w-full transition-all duration-300 ${
-              isVerified 
-                ? "bg-gradient-to-r from-[var(--primary-blue)] to-[var(--accent-blue)] hover:opacity-90" 
-                : "bg-gray-400"
-            } text-white py-2 px-4 rounded-lg text-base font-medium`}
-            disabled={!isVerified || isSubmitting}
-          >
-            {language === "es" ? "Confirmar y Enviar" : "Confirm and Send"}
-          </Button>
+      <DialogContent className="sm:max-w-[400px] text-center bg-white p-6 rounded-lg shadow-lg">
+        <h2 className="text-lg font-semibold">
+          {language === "es" ? "Verificación" : "Verification"}
+        </h2>
+        <p className="text-sm text-gray-500 mb-4">
+          {language === "es"
+            ? "Por favor confirma que no eres un robot"
+            : "Please confirm you're not a robot"}
+        </p>
+
+        <div className="flex justify-center items-center min-h-[100px] mb-4">
+          <ReCAPTCHA
+            sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+            onChange={(value) => setIsVerified(!!value)}
+            theme="light"
+            size="normal"
+          />
         </div>
+
+        <Button
+          onClick={onVerify}
+          disabled={isSubmitting}
+          className="w-full bg-gradient-to-r from-[var(--primary-blue)] to-[var(--accent-blue)] text-white"
+        >
+          {language === "es"
+            ? isSubmitting
+              ? "Enviando..."
+              : "Confirmar y Enviar"
+            : isSubmitting
+              ? "Sending..."
+              : "Confirm and Send"}
+        </Button>
       </DialogContent>
     </Dialog>
   );
